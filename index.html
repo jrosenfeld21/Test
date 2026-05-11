@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Random sports highlights — all sports, all eras, real YouTube links">
+<title>Highlight Reel</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f0e8;
+    --ink: #111;
+    --accent: #e8330a;
+    --accent2: #0a5ce8;
+    --gold: #f0b429;
+    --pink: #ff4d8d;
+    --green: #16a34a;
+    --card-bg: #fff;
+    --shadow: 4px 4px 0 #111;
+    --shadow-lg: 6px 6px 0 #111;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    min-height: 100vh;
+    padding: 1.5rem 1rem 5rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .everything { position: relative; z-index: 1; width: 100%; max-width: 700px; margin: 0 auto; }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    gap: 0.75rem;
+  }
+
+  .logo-wrap {
+    display: inline-block;
+    background: var(--accent);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    padding: 0.35rem 1.2rem 0.45rem;
+    transform: rotate(-1.5deg);
+    flex-shrink: 0;
+  }
+
+  .logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1.6rem, 6vw, 2.8rem);
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.25);
+  }
+
+  .logo span { color: var(--gold); }
+
+  .header-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+  .hdr-btn {
+    background: var(--card-bg);
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .hdr-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+  .hdr-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    padding: 0.65rem 1.25rem;
+    border-radius: 999px;
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--green); }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    justify-content: center;
+  }
+
+  .tab {
+    background: var(--card-bg);
+    border: 2.5px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    border-radius: 10px;
+    padding: 0.55rem 1.1rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    user-select: none;
+  }
+
+  .tab:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .tab.active { background: var(--ink); color: #fff; transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--gold); }
+
+  .tab-count {
+    background: var(--gold);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 0.05rem 0.45rem;
+    font-size: 0.7rem;
+  }
+
+  .tab.active .tab-count { background: var(--gold); color: var(--ink); }
+
+  /* ── SEARCH ── */
+  .search-wrap { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+
+  .search-input {
+    flex: 1;
+    background: var(--card-bg);
+    border: 2.5px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    border-radius: 10px;
+    padding: 0.65rem 1rem;
+    font-family: 'Archivo', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    outline: none;
+    transition: box-shadow 0.1s;
+    min-width: 0;
+  }
+
+  .search-input:focus { box-shadow: 3px 3px 0 var(--accent2); }
+  .search-input::placeholder { color: #bbb; font-weight: 500; }
+
+  .search-btn {
+    background: var(--accent2);
+    color: #fff;
+    border: 2.5px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    border-radius: 10px;
+    padding: 0.65rem 1rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── FILTERS ── */
+  .filter-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+    margin: 0.65rem 0 0.35rem;
+  }
+
+  .sport-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.38rem;
+    margin-bottom: 0.65rem;
+  }
+
+  @media (max-width: 540px) { .sport-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 360px) { .sport-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .sport-btn {
+    background: var(--card-bg);
+    border: 2.5px solid var(--ink);
+    border-radius: 8px;
+    box-shadow: 2.5px 2.5px 0 var(--ink);
+    padding: 0.45rem 0.1rem;
+    cursor: pointer;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.03em;
+    text-align: center;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.18rem;
+    user-select: none;
+  }
+
+  .sport-btn .em { font-size: 1.25rem; }
+  .sport-btn:hover { transform: translate(-1px,-1px); box-shadow: 3.5px 3.5px 0 var(--ink); }
+  .sport-btn:active { transform: translate(2px,2px); box-shadow: 0.5px 0.5px 0 var(--ink); }
+  .sport-btn.selected { background: var(--accent); color: #fff; transform: translate(-2px,-2px); box-shadow: 4.5px 4.5px 0 var(--ink); }
+  .sport-btn.selected.any-btn { background: var(--accent2); }
+
+  .era-row { display: flex; gap: 0.38rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+
+  .era-chip {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 0.28rem 0.8rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.67rem;
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+
+  .era-chip:hover { transform: translateY(-1px); }
+  .era-chip.selected { background: var(--ink); color: var(--gold); }
+
+  /* ── GO BUTTON ── */
+  .go-wrap { display: flex; justify-content: center; margin-bottom: 1.4rem; }
+
+  .go-btn {
+    background: var(--gold);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    border-radius: 14px;
+    padding: 0.9rem 2.2rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--ink);
+    user-select: none;
+  }
+
+  .go-btn:hover:not(:disabled) { transform: translate(-2px,-3px); box-shadow: 8px 9px 0 var(--ink); }
+  .go-btn:active:not(:disabled) { transform: translate(3px,3px); box-shadow: 2px 2px 0 var(--ink); }
+  .go-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .dice { font-size: 1.6rem; display: inline-block; }
+  .dice.spin { animation: spinY 0.5s linear infinite; }
+  @keyframes spinY { 0%{transform:rotateY(0)} 100%{transform:rotateY(360deg)} }
+
+  /* ── LOADING ── */
+  .loading-box {
+    display: none;
+    background: var(--card-bg);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    border-radius: 14px;
+    padding: 1.4rem;
+    text-align: center;
+    margin-bottom: 1.1rem;
+  }
+
+  .loading-box.show { display: block; animation: popIn 0.3s ease both; }
+  .loading-text { font-family: 'Archivo Black', sans-serif; font-size: 0.92rem; letter-spacing: 0.05em; }
+  .loading-sub { font-size: 0.76rem; color: #888; margin-top: 0.3rem; }
+  .dots::after { content: ''; animation: dots 1.2s steps(4,end) infinite; }
+  @keyframes dots { 0%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} 100%{content:''} }
+
+  /* ── RESULT CARD ── */
+  .result-card {
+    display: none;
+    background: var(--card-bg);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.1rem;
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  .result-card.show { display: block; }
+  @keyframes popIn { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
+
+  .card-tag-row {
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    padding: 0.32rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-tag-era {
+    background: var(--gold);
+    color: var(--ink);
+    border-radius: 4px;
+    padding: 0.1rem 0.42rem;
+    font-size: 0.62rem;
+  }
+
+  .card-body { padding: 1rem 1.1rem 0.4rem; }
+
+  .card-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1rem, 3.2vw, 1.25rem);
+    line-height: 1.25;
+    margin-bottom: 0.45rem;
+  }
+
+  .card-desc { font-size: 0.83rem; color: #444; line-height: 1.55; }
+
+  .card-footer {
+    padding: 0.85rem 1.1rem 1.1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .watch-btn {
+    flex: 1;
+    background: var(--accent);
+    color: #fff;
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    padding: 0.65rem 0.85rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    min-width: 0;
+  }
+
+  .watch-btn:hover { transform: translate(-1px,-2px); box-shadow: 5px 6px 0 var(--ink); }
+  .watch-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+
+  .icon-btn {
+    background: var(--card-bg);
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    padding: 0.65rem 0.8rem;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 46px;
+    user-select: none;
+  }
+
+  .icon-btn:hover { transform: translate(-1px,-2px); box-shadow: 5px 6px 0 var(--ink); }
+  .icon-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .icon-btn.faved { background: var(--pink); }
+
+  /* ── ERROR ── */
+  .error-box {
+    display: none;
+    background: #fff0ee;
+    border: 2.5px solid var(--accent);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    font-size: 0.83rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1.1rem;
+    text-align: center;
+  }
+
+  .error-box.show { display: block; }
+
+  /* ── VIEWS ── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #888;
+  }
+
+  .empty-state .icon { font-size: 2.8rem; margin-bottom: 0.6rem; display: block; }
+  .empty-state .title { font-family: 'Archivo Black', sans-serif; font-size: 1rem; margin-bottom: 0.35rem; color: #555; }
+  .empty-state .sub { font-size: 0.83rem; }
+
+  /* ── FAVORITES LIST ── */
+  .fav-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .fav-item {
+    background: var(--card-bg);
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    border-radius: 12px;
+    padding: 0.8rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    animation: fadeIn 0.25s ease both;
+  }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+  .fav-emoji { font-size: 1.4rem; flex-shrink: 0; }
+
+  .fav-info { flex: 1; min-width: 0; }
+
+  .fav-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.3;
+    margin-bottom: 0.12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .fav-meta { font-size: 0.68rem; color: #888; font-weight: 600; letter-spacing: 0.05em; }
+
+  .fav-actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
+
+  .fav-btn {
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+    border-radius: 8px;
+    padding: 0.38rem 0.65rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.68rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    user-select: none;
+  }
+
+  .fav-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+  .fav-btn.watch { background: var(--accent); color: #fff; }
+  .fav-btn.share-fav { background: var(--accent2); color: #fff; }
+  .fav-btn.remove { background: var(--bg); color: var(--ink); }
+
+  /* ── HOME SCREEN TIP ── */
+  .home-tip {
+    background: var(--gold);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    padding: 0.55rem 0.85rem;
+    margin-bottom: 1.1rem;
+    font-size: 0.76rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .home-tip span { flex: 1; }
+
+  .home-tip-dismiss {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0.45;
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .home-tip-dismiss:hover { opacity: 1; }
+
+  /* ── HERO SECTION ── */
+  .hero {
+    text-align: center;
+    padding: 1.5rem 0.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero.collapsed { display: none; }
+
+  .hero-eyebrow {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+
+  .hero-headline {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1.8rem, 7vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  .hero-headline em {
+    font-style: normal;
+    color: var(--accent);
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Animated underline on the italic word */
+  .hero-headline em::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underlineIn 0.5s ease 0.7s both;
+  }
+
+  @keyframes underlineIn { to { transform: scaleX(1); } }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: #666;
+    max-width: 380px;
+    margin: 0 auto 1.25rem;
+    line-height: 1.55;
+    animation: fadeUp 0.5s ease 0.3s both;
+  }
+
+  .hero-pills {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.5s ease 0.4s both;
+  }
+
+  .hero-pill {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-pill.gold { background: var(--gold); color: var(--ink); }
+  .hero-pill.red  { background: var(--accent); }
+
+  /* Floating emojis behind hero */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .hero-bg span {
+    position: absolute;
+    font-size: 1.8rem;
+    opacity: 0.07;
+    animation: floatBg linear infinite;
+  }
+
+  @keyframes floatBg {
+    0%   { transform: translateY(120%) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.07; }
+    90%  { opacity: 0.07; }
+    100% { transform: translateY(-120%) rotate(360deg); opacity: 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SPORT OF THE DAY ── */
+  .sotd {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    animation: fadeUp 0.4s ease 0.5s both;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+    user-select: none;
+  }
+
+  .sotd:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--gold); }
+  .sotd:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--gold); }
+
+  .sotd-icon { font-size: 2.2rem; flex-shrink: 0; }
+
+  .sotd-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+
+  .sotd-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+
+  .sotd-cta {
+    margin-left: auto;
+    background: var(--gold);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* ── TRIVIA CARD ── */
+  .trivia-card {
+    display: none;
+    background: var(--accent2);
+    color: #fff;
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 1.1rem;
+    animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  .trivia-card.show { display: block; }
+
+  .trivia-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 0.4rem;
+  }
+
+  .trivia-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  /* ── TRIVIA TAB ── */
+  .trivia-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .trivia-counter {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: #999;
+    text-transform: uppercase;
+  }
+
+  .trivia-sport-row {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
+  }
+
+  .trivia-filter {
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 0.28rem 0.8rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+
+  .trivia-filter:hover { transform: translateY(-1px); }
+  .trivia-filter.active { background: var(--ink); color: var(--gold); }
+
+  /* Big fact card */
+  .fact-card {
+    background: var(--card-bg);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    border-radius: 16px;
+    padding: 1.5rem 1.3rem 1.2rem;
+    margin-bottom: 1rem;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: default;
+  }
+
+  .fact-card::before {
+    content: attr(data-sport-em);
+    position: absolute;
+    top: -0.5rem;
+    right: 0.75rem;
+    font-size: 5rem;
+    opacity: 0.06;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .fact-card.animate-in {
+    animation: factSlideIn 0.32s cubic-bezier(0.34,1.4,0.64,1) both;
+  }
+
+  @keyframes factSlideIn {
+    from { opacity: 0; transform: translateX(40px) scale(0.97); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+  }
+
+  .fact-sport-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    width: fit-content;
+  }
+
+  .fact-text {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1rem, 3.2vw, 1.25rem);
+    line-height: 1.4;
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+
+  .fact-text em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .fact-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .fact-nav-btn {
+    background: var(--bg);
+    border: 2.5px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    border-radius: 10px;
+    padding: 0.6rem 1.1rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .fact-nav-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .fact-nav-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .fact-nav-btn.next { background: var(--gold); }
+
+  .fact-dots {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 120px;
+  }
+
+  .fact-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ccc;
+    transition: background 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .fact-dot.active { background: var(--ink); transform: scale(1.4); }
+
+  /* Swipe hint */
+  .swipe-hint {
+    text-align: center;
+    font-size: 0.72rem;
+    color: #bbb;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Random fact btn */
+  .shuffle-btn {
+    width: 100%;
+    background: var(--accent2);
+    color: #fff;
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    padding: 0.7rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    user-select: none;
+    margin-bottom: 1rem;
+  }
+
+  .shuffle-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+  .shuffle-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+</style>
+</head>
+<body>
+<div class="everything">
+
+  <header>
+    <div class="logo-wrap">
+      <div class="logo">HIGHLIGHT<span>REEL</span></div>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn" onclick="shareApp()">
+        🔗 Share
+      </button>
+    </div>
+  </header>
+
+  <!-- Home screen tip -->
+  <div class="home-tip" id="homeTip">
+    <span id="homeTipText"></span>
+    <button class="home-tip-dismiss" onclick="dismissTip()" title="Dismiss">✕</button>
+  </div>
+
+
+  <!-- ── HERO ── -->
+  <div class="hero" id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-headline">Every moment<br>that made you <em>jump</em></div>
+    <div class="hero-pills">
+      <span class="hero-pill red">🏈 NFL</span>
+      <span class="hero-pill">🏀 NBA</span>
+      <span class="hero-pill gold">⚾ MLB</span>
+      <span class="hero-pill">🏒 NHL</span>
+      <span class="hero-pill red">⚽ Soccer</span>
+      <span class="hero-pill">🥇 Olympics</span>
+      <span class="hero-pill gold">+ more</span>
+    </div>
+  </div>
+
+  <!-- ── TRIVIA ── -->
+  <div class="trivia-card" id="triviaCard">
+    <div class="trivia-label">🧠 Did You Know?</div>
+    <div class="trivia-text" id="triviaText"></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="browse" onclick="switchTab(this)">🎲 Browse</div>
+    <div class="tab" data-tab="favorites" onclick="switchTab(this)">❤️ Favorites <span class="tab-count" id="favCount">0</span></div>
+    <div class="tab" data-tab="trivia" onclick="switchTab(this)">🧠 Facts</div>
+  </div>
+
+  <!-- ── BROWSE VIEW ── -->
+  <div class="view active" id="view-browse">
+
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search any player or moment…">
+      <button class="search-btn" id="searchBtn" onclick="doSearch()">SEARCH</button>
+    </div>
+
+    <div class="filter-label">SPORT</div>
+    <div class="sport-grid" id="sportGrid">
+      <button class="sport-btn any-btn selected" data-sport="ANY"><span class="em">🎲</span>ANY</button>
+      <button class="sport-btn" data-sport="NFL"><span class="em">🏈</span>NFL</button>
+      <button class="sport-btn" data-sport="NBA"><span class="em">🏀</span>NBA</button>
+      <button class="sport-btn" data-sport="MLB"><span class="em">⚾</span>MLB</button>
+      <button class="sport-btn" data-sport="NHL"><span class="em">🏒</span>NHL</button>
+      <button class="sport-btn" data-sport="SOCCER"><span class="em">⚽</span>SOCCER</button>
+      <button class="sport-btn" data-sport="TENNIS"><span class="em">🎾</span>TENNIS</button>
+      <button class="sport-btn" data-sport="BOXING"><span class="em">🥊</span>BOXING</button>
+      <button class="sport-btn" data-sport="OLYMPICS"><span class="em">🥇</span>OLYMPICS</button>
+      <button class="sport-btn" data-sport="GOLF"><span class="em">⛳</span>GOLF</button>
+      <button class="sport-btn" data-sport="MMA"><span class="em">🤼</span>MMA/UFC</button>
+      <button class="sport-btn" data-sport="EXTREME"><span class="em">🛹</span>EXTREME</button>
+    </div>
+
+    <div class="filter-label">ERA</div>
+    <div class="era-row">
+      <div class="era-chip selected" data-era="ALL">All Time</div>
+      <div class="era-chip" data-era="PRE-1980">Pre-1980</div>
+      <div class="era-chip" data-era="80s">'80s</div>
+      <div class="era-chip" data-era="90s">'90s</div>
+      <div class="era-chip" data-era="2000s">2000s</div>
+      <div class="era-chip" data-era="2010s">2010s</div>
+      <div class="era-chip" data-era="2020s">2020s</div>
+    </div>
+
+    <div class="go-wrap">
+      <button class="go-btn" id="goBtn" onclick="roll()">
+        <span class="dice" id="dice">🎲</span> HIT ME
+      </button>
+    </div>
+
+    <div class="loading-box" id="loadingBox">
+      <div class="loading-text">Finding the highlight<span class="dots"></span></div>
+      <div class="loading-sub" id="loadingSub">Searching the web for a verified link</div>
+    </div>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <div class="result-card" id="resultCard">
+      <div class="card-tag-row">
+        <span id="cardTag"></span>
+        <span class="card-tag-era" id="cardEra"></span>
+      </div>
+      <div class="card-body">
+        <div class="card-title" id="cardTitle"></div>
+        <div class="card-desc" id="cardDesc"></div>
+      </div>
+      <div class="card-footer">
+        <a class="watch-btn" id="watchBtn" href="#" target="_blank" rel="noopener">▶ Watch</a>
+        <button class="icon-btn" id="shareHighlightBtn" onclick="shareHighlight()" title="Share this highlight">📤</button>
+        <button class="icon-btn" id="favBtn" onclick="toggleFav()" title="Save to favorites">🤍</button>
+        <button class="icon-btn" onclick="roll()" title="Another random">🎲</button>
+      </div>
+    </div>
+
+
+  <!-- ── SPORT OF THE DAY ── -->
+  <div class="sotd" id="sotdCard" onclick="loadSotd()">
+    <div class="sotd-icon" id="sotdIcon">🏆</div>
+    <div>
+      <div class="sotd-label">⚡ Today's Featured Highlight</div>
+      <div class="sotd-title" id="sotdTitle">Loading…</div>
+    </div>
+    <div class="sotd-cta">Watch ↗</div>
+  </div>
+
+  </div>
+
+  <!-- ── TRIVIA VIEW ── -->
+  <div class="view" id="view-trivia">
+
+    <div class="trivia-header">
+      <div class="trivia-counter" id="triviaCounter">Fact 1 of 40</div>
+    </div>
+
+    <div class="trivia-sport-row" id="triviaFilters">
+      <div class="trivia-filter active" data-tsport="ALL">All Sports</div>
+      <div class="trivia-filter" data-tsport="NFL">🏈 NFL</div>
+      <div class="trivia-filter" data-tsport="NBA">🏀 NBA</div>
+      <div class="trivia-filter" data-tsport="MLB">⚾ MLB</div>
+      <div class="trivia-filter" data-tsport="NHL">🏒 NHL</div>
+      <div class="trivia-filter" data-tsport="SOCCER">⚽ Soccer</div>
+      <div class="trivia-filter" data-tsport="TENNIS">🎾 Tennis</div>
+      <div class="trivia-filter" data-tsport="BOXING">🥊 Boxing</div>
+      <div class="trivia-filter" data-tsport="OLYMPICS">🥇 Olympics</div>
+      <div class="trivia-filter" data-tsport="GOLF">⛳ Golf</div>
+      <div class="trivia-filter" data-tsport="MMA">🤼 MMA</div>
+      <div class="trivia-filter" data-tsport="EXTREME">🛹 Extreme</div>
+      <div class="trivia-filter" data-tsport="GENERAL">🏆 General</div>
+    </div>
+
+    <div class="fact-card" id="factCard" data-sport-em="🏆">
+      <div class="fact-sport-badge" id="factBadge">🏆 General</div>
+      <div class="fact-text" id="factText"></div>
+      <div class="fact-nav">
+        <button class="fact-nav-btn" onclick="prevFact()">← Prev</button>
+        <div class="fact-dots" id="factDots"></div>
+        <button class="fact-nav-btn next" onclick="nextFact()">Next →</button>
+      </div>
+    </div>
+
+    <div class="swipe-hint">Tap Next or swipe to browse</div>
+
+    <button class="shuffle-btn" onclick="shuffleFact()">🔀 Random Fact</button>
+
+  </div>
+
+
+  <!-- ── FAVORITES VIEW ── -->
+  <div class="view" id="view-favorites">
+    <div id="favEmpty" class="empty-state">
+      <span class="icon">❤️</span>
+      <div class="title">No favorites yet</div>
+      <div class="sub">Tap 🤍 on any highlight to save it here.</div>
+    </div>
+    <div class="fav-list" id="favList"></div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── HIGHLIGHT POOL ──
+const HIGHLIGHTS = [
+  { sport:'NFL', em:'🏈', era:'PRE-1980', title:"The Ice Bowl — Packers vs Cowboys 1967", desc:"Green Bay wins the NFL Championship in -13°F wind chill. Bart Starr's QB sneak with 16 seconds left is one of the gutsiest calls ever." },
+  { sport:'NFL', em:'🏈', era:'PRE-1980', title:"The Immaculate Reception — Franco Harris 1972", desc:"Franco Harris snatches a deflected ball off the turf and sprints into the end zone. Arguably the most improbable play in NFL history." },
+  { sport:'NFL', em:'🏈', era:'80s', title:"The Catch — Dwight Clark 1982 NFC Championship", desc:"Montana scrambles right, throws it high to the back of the end zone. Clark goes up and gets it. The 49ers dynasty is born." },
+  { sport:'NFL', em:'🏈', era:'80s', title:"Joe Montana's Super Bowl XXIII Drive", desc:"92 yards, 11 plays, John Taylor in the end zone. Montana stayed perfectly calm — even pointing out John Candy in the stands during the huddle." },
+  { sport:'NFL', em:'🏈', era:'90s', title:"Music City Miracle — Titans vs Bills 2000", desc:"Frank Wycheck laterals across the field to Kevin Dyson, who races 75 yards for the TD. Wild Card playoffs would never feel safe again." },
+  { sport:'NFL', em:'🏈', era:'2000s', title:"David Tyree's Helmet Catch — Super Bowl XLII", desc:"Eli Manning escapes the sack, heaves it deep. Tyree pins the ball against his own helmet. The Giants stun the undefeated Patriots." },
+  { sport:'NFL', em:'🏈', era:'2010s', title:"Super Bowl LI Comeback — Patriots vs Falcons", desc:"Down 28–3, Tom Brady leads New England back to win 34–28 in overtime. The biggest comeback in Super Bowl history." },
+  { sport:'NFL', em:'🏈', era:'2010s', title:"Beast Quake — Marshawn Lynch Run 2011", desc:"Lynch breaks nine tackles on a 67-yard TD run. The crowd noise registered on a nearby seismograph." },
+  { sport:'NFL', em:'🏈', era:'2010s', title:"Odell Beckham Jr. One-Handed Catch 2014", desc:"Three fingers, full extension, falling backwards. The catch that broke the internet on a Sunday night." },
+  { sport:'NFL', em:'🏈', era:'2020s', title:"Patrick Mahomes Best Plays Compilation", desc:"No-look passes, scrambling touchdowns, impossible throws. Mahomes does things no quarterback has done before." },
+  { sport:'NFL', em:'🏈', era:'2020s', title:"Justin Jefferson's Miracle Catch vs Bills 2022", desc:"Fourth and 18, Jefferson goes up, ball hits the ground — except it didn't. The greatest catch of the modern era." },
+  { sport:'NBA', em:'🏀', era:'PRE-1980', title:"Willis Reed Limps Out — 1970 NBA Finals Game 7", desc:"Reed had torn a thigh muscle. When he appeared in warmups, Madison Square Garden erupted. He scored the first two baskets." },
+  { sport:'NBA', em:'🏀', era:'80s', title:"Magic vs Bird — 1984 NBA Finals", desc:"The rivalry that saved the NBA. Magic's Lakers and Bird's Celtics traded haymakers across seven unforgettable games." },
+  { sport:'NBA', em:'🏀', era:'80s', title:"The Shot — Jordan over Craig Ehlo 1989", desc:"One second left in Game 5. Jordan catches, rises, and buries it. Cleveland crumples. Chicago advances." },
+  { sport:'NBA', em:'🏀', era:'90s', title:"Michael Jordan The Shrug Game — 1992 Finals", desc:"Jordan drains his sixth three-pointer of the first half, turns to Magic Johnson, and shrugs. Pure dominance." },
+  { sport:'NBA', em:'🏀', era:'90s', title:"Jordan's Flu Game — 1997 Finals Game 5", desc:"Visibly ill and dehydrated, Jordan drops 38 points and collapses into Pippen's arms after the win." },
+  { sport:'NBA', em:'🏀', era:'90s', title:"Reggie Miller 8 Points in 9 Seconds vs Knicks", desc:"Down by six with 18 seconds left. Miller hits a three, steals the inbounds, hits another. Madison Square Garden goes silent." },
+  { sport:'NBA', em:'🏀', era:'2000s', title:"Kobe Bryant 81 Points vs Raptors 2006", desc:"The second-highest single-game total in NBA history. Kobe went off with stunning ease across four quarters." },
+  { sport:'NBA', em:'🏀', era:'2000s', title:"Tracy McGrady 13 Points in 35 Seconds vs Spurs", desc:"Down by 10. McGrady hits four threes in 35 seconds — three with a defender draped on him. Houston wins by one." },
+  { sport:'NBA', em:'🏀', era:'2010s', title:"LeBron's Chase-Down Block — 2016 Finals Game 7", desc:"With under two minutes left, LeBron tracks down Iguodala from behind and pins it against the backboard. Cleveland wins." },
+  { sport:'NBA', em:'🏀', era:'2010s', title:"Ray Allen Corner Three — 2013 Finals Game 6", desc:"Down by three with seconds left, Allen backpedals to the corner and buries it. One of the greatest clutch moments ever." },
+  { sport:'NBA', em:'🏀', era:'2010s', title:"Damian Lillard Buzzer-Beater vs OKC 2019", desc:"37-foot buzzer-beater over Paul George. Lillard stares down the Thunder bench and waves goodbye as the Blazers advance." },
+  { sport:'NBA', em:'🏀', era:'2010s', title:"Kawhi Leonard's Bouncing Buzzer-Beater vs Sixers", desc:"The ball rattles around the rim four times — and drops. Raptors advance in one of the most improbable shots ever." },
+  { sport:'NBA', em:'🏀', era:'2020s', title:"Stephen Curry 50 Points in Finals Game 4 2022", desc:"Curry single-handedly drags the Warriors back. The greatest shooter ever, when it mattered most." },
+  { sport:'MLB', em:'⚾', era:'PRE-1980', title:"Bobby Thomson's Shot Heard 'Round the World 1951", desc:"Giants trail by two in the ninth. Thomson swings. Russ Hodges loses his mind. Baseball's most legendary walk-off." },
+  { sport:'MLB', em:'⚾', era:'PRE-1980', title:"Don Larsen's Perfect Game — 1956 World Series", desc:"The only perfect game in World Series history. 97 pitches. 27 batters. Zero baserunners." },
+  { sport:'MLB', em:'⚾', era:'PRE-1980', title:"Hank Aaron Breaks Babe Ruth's HR Record 1974", desc:"715. Aaron surpasses Babe Ruth on the all-time home run list. Two fans rushed the field to congratulate him." },
+  { sport:'MLB', em:'⚾', era:'80s', title:"Mookie Wilson's Grounder Through Buckner's Legs 1986", desc:"Game 6, World Series. The ball rolls under Buckner. New York erupts." },
+  { sport:'MLB', em:'⚾', era:'80s', title:"Kirk Gibson Pinch-Hit Homer — 1988 World Series", desc:"Barely able to walk, Gibson limps up. Two-strike count. Two-run homer off Eckersley. Vin Scully's call is perfect." },
+  { sport:'MLB', em:'⚾', era:'90s', title:"Joe Carter Walk-Off — 1993 World Series Game 6", desc:"Down by one, two on. Carter swings. The only Series-ending walk-off homer that won the title outright." },
+  { sport:'MLB', em:'⚾', era:'2000s', title:"Derek Jeter's Flip Play — 2001 ALDS", desc:"A wild throw sails foul — and somehow Jeter sprints in from nowhere to flip it home for the out." },
+  { sport:'MLB', em:'⚾', era:'2000s', title:"Red Sox Reverse the Curse — 2004 ALCS", desc:"Down 0–3 to the Yankees. No team had ever come back from 0–3. Boston wins four straight. The Curse dies." },
+  { sport:'MLB', em:'⚾', era:'2010s', title:"Cubs Win 2016 World Series Game 7", desc:"Extra innings, rain delay, a comeback. Chicago wins for the first time since 1908." },
+  { sport:'NHL', em:'🏒', era:'80s', title:"Miracle on Ice — USA vs USSR 1980 Olympics", desc:"A college-aged US team stuns the Soviet hockey machine. Al Michaels: 'Do you believe in miracles? YES!'" },
+  { sport:'NHL', em:'🏒', era:'80s', title:"Gretzky's Record-Breaking 92-Goal Season", desc:"Wayne Gretzky did things on ice that still defy statistical sense. The greatest hockey player who ever lived." },
+  { sport:'NHL', em:'🏒', era:'90s', title:"Mario Lemieux's Most Unbelievable Goals", desc:"Dragging two defenders, dropping the puck, picking it back up, scoring. Lemieux made impossible plays look casual." },
+  { sport:'NHL', em:'🏒', era:'2000s', title:"Sid Crosby OT Gold Medal Goal — 2010 Olympics", desc:"Overtime in Vancouver. Crosby buries it past Ryan Miller. Canada celebrates like never before." },
+  { sport:'NHL', em:'🏒', era:'2010s', title:"Patrick Kane's OT Cup-Winning Goal 2010", desc:"Kane was the only one who saw it cross the line. He skates the length of the ice celebrating before anyone else realizes it's in." },
+  { sport:'NHL', em:'🏒', era:'2020s', title:"Connor McDavid's Best Goals Compilation", desc:"The fastest skater in the league makes defenders look frozen. McDavid is rewriting what's possible on ice." },
+  { sport:'SOCCER', em:'⚽', era:'PRE-1980', title:"Pelé's Best Goals Compilation", desc:"Three World Cup wins. 1,000+ career goals. The first global sports superstar — and arguably still the greatest." },
+  { sport:'SOCCER', em:'⚽', era:'80s', title:"Maradona's Goal of the Century — 1986 World Cup", desc:"Five England players beaten, goalkeeper beaten, world stunned. The greatest solo goal ever scored." },
+  { sport:'SOCCER', em:'⚽', era:'90s', title:"Zidane's Volley — 2002 Champions League Final", desc:"A perfectly struck left-footed volley from the edge of the box. Real Madrid wins. Zidane's masterpiece." },
+  { sport:'SOCCER', em:'⚽', era:'90s', title:"Man United's Treble — 1999 Champions League Final", desc:"Bayern led 1–0 in stoppage time. Then Sheringham. Then Solskjær. The Treble in 90 extraordinary seconds." },
+  { sport:'SOCCER', em:'⚽', era:'2000s', title:"Istanbul — Liverpool's Comeback vs AC Milan 2005", desc:"Milan led 3–0 at halftime of the Champions League Final. Liverpool scored three in six minutes. Pure chaos." },
+  { sport:'SOCCER', em:'⚽', era:'2010s', title:"Sergio Aguero's Title-Winning Goal — Man City 2012", desc:"Final day. Stoppage time. Aguerooooo. City win their first Premier League title in 44 years." },
+  { sport:'SOCCER', em:'⚽', era:'2010s', title:"Brazil 7 — Germany 1, World Cup 2014", desc:"Germany scored four goals in six minutes. Brazil — at home — dismantled in front of a stunned crowd." },
+  { sport:'SOCCER', em:'⚽', era:'2020s', title:"Messi Wins the World Cup — Qatar 2022 Final", desc:"3–3, extra time, penalties. Messi lifts the trophy. The career arc complete." },
+  { sport:'TENNIS', em:'🎾', era:'2000s', title:"Federer vs Nadal — Wimbledon Final 2008", desc:"Widely called the greatest tennis match ever played. Five sets, fading light, two legends at their absolute peak." },
+  { sport:'TENNIS', em:'🎾', era:'2010s', title:"Isner vs Mahut — The Longest Match Ever 2010", desc:"70–68 in the fifth set. 11 hours over three days. A scoreboard that ran out of room." },
+  { sport:'TENNIS', em:'🎾', era:'2010s', title:"Djokovic Saves Two Match Points — Wimbledon 2019", desc:"Federer had two championship points. Djokovic saves both, wins in a tiebreak. The longest Wimbledon final ever." },
+  { sport:'TENNIS', em:'🎾', era:'80s', title:"Steffi Graf's Golden Slam — 1988", desc:"All four majors AND Olympic gold in one calendar year. The only player ever to achieve it." },
+  { sport:'BOXING', em:'🥊', era:'PRE-1980', title:"Rumble in the Jungle — Ali vs Foreman 1974", desc:"Ali rope-a-doped until Foreman punched himself out, then stopped him in the 8th. Boxing's greatest upset." },
+  { sport:'BOXING', em:'🥊', era:'PRE-1980', title:"Thrilla in Manila — Ali vs Frazier III 1975", desc:"Fourteen brutal rounds in oppressive heat. Ali called it the closest thing to dying. Frazier's corner stopped it before round 15." },
+  { sport:'BOXING', em:'🥊', era:'90s', title:"Buster Douglas Knocks Out Mike Tyson 1990", desc:"42–1 underdog. Tyson unbeaten in 37 fights. Round 10. One of the greatest upsets in sports history." },
+  { sport:'BOXING', em:'🥊', era:'2010s', title:"Mayweather vs Pacquiao — Fight of the Century 2015", desc:"The most lucrative fight ever. 4.6 million pay-per-view buys. Mayweather remained undefeated." },
+  { sport:'OLYMPICS', em:'🥇', era:'80s', title:"Carl Lewis Wins 4 Golds — Los Angeles 1984", desc:"100m, 200m, long jump, 4x100 relay. Lewis matched Jesse Owens' legendary 1936 performance on home soil." },
+  { sport:'OLYMPICS', em:'🥇', era:'90s', title:"Kerri Strug's Vault on One Leg — Atlanta 1996", desc:"Injured on her first vault, she went again, nailed it on one foot, then collapsed. USA wins gold." },
+  { sport:'OLYMPICS', em:'🥇', era:'2000s', title:"Usain Bolt 9.69s World Record — Beijing 2008", desc:"Bolt ran 9.69 seconds while celebrating the last 20 meters. With his shoelace untied." },
+  { sport:'OLYMPICS', em:'🥇', era:'2000s', title:"Michael Phelps 8 Gold Medals — Beijing 2008", desc:"Eight golds in one Games. The 4x100 relay finish alone is worth watching twice." },
+  { sport:'OLYMPICS', em:'🥇', era:'2010s', title:"Simone Biles' Triple-Double — World Championships", desc:"Two flips, three twists. The first woman to ever land it. Then she made it part of her routine." },
+  { sport:'OLYMPICS', em:'🥇', era:'2020s', title:"Sydney McLaughlin 400m Hurdles WR — Tokyo 2021", desc:"An unfathomable 51.46. One of the most dominant individual performances in Olympic history." },
+  { sport:'GOLF', em:'⛳', era:'PRE-1980', title:"Jack Nicklaus Wins 1986 Masters at 46", desc:"The oldest Masters champion ever, with his son caddying. The Sunday back nine charge is the most iconic in major history." },
+  { sport:'GOLF', em:'⛳', era:'90s', title:"Tiger Woods Wins 1997 Masters by 12 Strokes", desc:"21 years old. First Black player to win at Augusta. The widest margin of victory in Masters history. Golf changed forever." },
+  { sport:'GOLF', em:'⛳', era:'2000s', title:"Tiger's Chip-In on 16 — 2005 Masters", desc:"The Nike swoosh balances on the lip for a full second before dropping. Verne Lundquist: 'In your LIFE, have you ever seen anything like that?!'" },
+  { sport:'GOLF', em:'⛳', era:'2010s', title:"Tiger Woods Wins 2019 Masters", desc:"After scandal and four back surgeries. Tiger walks off the 18th into his son's arms. The greatest comeback in golf." },
+  { sport:'MMA', em:'🤼', era:'2010s', title:"Conor McGregor KOs José Aldo in 13 Seconds", desc:"UFC 194. Aldo had been undefeated for 10 years. McGregor's left hand ended his reign in 13 seconds." },
+  { sport:'MMA', em:'🤼', era:'2010s', title:"Khabib vs McGregor — UFC 229", desc:"Khabib dominated McGregor, tapped him out in the fourth, then leapt out of the cage at McGregor's team. Total chaos." },
+  { sport:'MMA', em:'🤼', era:'2020s', title:"Israel Adesanya's Best Knockouts Compilation", desc:"The most precise striker in UFC history. Adesanya's footwork and timing make MMA look like ballet." },
+  { sport:'EXTREME', em:'🛹', era:'90s', title:"Tony Hawk's First 900 — 1999 X Games", desc:"After 11 attempts. Hawk lands the first 900 in skateboarding history. The crowd swarmed him before he stopped rolling." },
+  { sport:'EXTREME', em:'🛹', era:'2010s', title:"Shaun White's Halfpipe Gold — Pyeongchang 2018", desc:"Last run of the Olympics. White nails back-to-back 1440s to take gold by 0.75 points. He collapsed in tears at the bottom." },
+  { sport:'EXTREME', em:'🛹', era:'2010s', title:"Felix Baumgartner Skydives From Space 2012", desc:"24 miles up. Free fall faster than the speed of sound. The first human to break the sound barrier without an aircraft." },
+  // ── NFL (additional) ──
+  { sport:'NFL', em:'🏈', era:'PRE-1980', title:"Jim Brown's Unstoppable Career Highlights", desc:"Many consider him the greatest running back ever. Brown retired at 29 and never played a bad game. Defenders just bounced off him." },
+  { sport:'NFL', em:'🏈', era:'PRE-1980', title:"Lynn Swann's Super Bowl X Acrobatic Catches", desc:"Swann made four catches for 161 yards including a diving 64-yarder that many still call the greatest Super Bowl catch ever made." },
+  { sport:'NFL', em:'🏈', era:'80s', title:"Walter Payton's Greatest Runs", desc:"Sweetness. The most complete running back in NFL history — blocking, catching, running. Never complained, never stopped fighting forward." },
+  { sport:'NFL', em:'🏈', era:'80s', title:"Lawrence Taylor Sacks and Dominant Plays", desc:"LT changed how defenses were built. Quarterbacks genuinely feared him. His 1986 season may be the greatest defensive year in NFL history." },
+  { sport:'NFL', em:'🏈', era:'90s', title:"Jerry Rice Greatest Catches and TDs", desc:"The greatest receiver ever. 197 touchdowns, 1,549 receptions. Rice made every route look like a science experiment that always exploded." },
+  { sport:'NFL', em:'🏈', era:'90s', title:"Emmitt Smith Breaks Rushing Record 2002", desc:"Smith surpasses Walter Payton's all-time rushing record in Dallas. He stopped play, got the ball, and wept on the field with his family." },
+  { sport:'NFL', em:'🏈', era:'2000s', title:"Randy Moss 23 TD Season — 2007 Patriots", desc:"Moss caught 23 touchdown passes in a single season, shattering the NFL record. Every safety in the league was on notice every Sunday." },
+  { sport:'NFL', em:'🏈', era:'2000s', title:"Santonio Holmes Super Bowl XLIII Game-Winner", desc:"Six seconds left, Holmes tip-toes both feet in the back corner of the end zone. The Steelers beat the Cardinals in one of the best Super Bowls ever." },
+  { sport:'NFL', em:'🏈', era:'2010s', title:"Malcolm Butler's Goal Line Interception — Super Bowl XLIX", desc:"Seahawks at the one yard line, seconds to play. Butler jumps the slant, picks it off. The Patriots win. Nobody saw it coming." },
+  { sport:'NFL', em:'🏈', era:'2010s', title:"Julio Jones Sideline Catch — NFC Championship 2017", desc:"Jones goes up over two defenders, pins it on his forearms on the sideline. Atlanta fans thought the Super Bowl was theirs. It almost was." },
+  { sport:'NFL', em:'🏈', era:'2020s', title:"Ja'Marr Chase's Rookie Season Highlights 2021", desc:"Chase dropped every pass in training camp — then went out and had one of the greatest rookie receiver seasons in NFL history." },
+  { sport:'NFL', em:'🏈', era:'2020s', title:"Joe Burrow's Comeback Kid Moments", desc:"Cool under pressure, fearless in the pocket. Burrow took a franchise that hadn't won a playoff game in 31 years to the Super Bowl in year two." },
+
+  // ── NBA (additional) ──
+  { sport:'NBA', em:'🏀', era:'PRE-1980', title:"Wilt Chamberlain Scores 100 Points — March 2, 1962", desc:"100 points. In one game. Against the Knicks in Hershey, Pennsylvania. No TV cameras, no video — just a box score that nobody believed." },
+  { sport:'NBA', em:'🏀', era:'80s', title:"Larry Bird Steals the Inbound — 1987 Playoffs", desc:"Bird reads the lazy pass, picks it off, finds Dennis Johnson cutting to the basket. The Celtics steal the game. Pure basketball genius." },
+  { sport:'NBA', em:'🏀', era:'80s', title:"Magic Johnson's Junior Skyhook — 1987 Finals", desc:"With two seconds left in Game 4, Magic catches in the post and banks in the skyhook over McHale and Parish. Lakers take control of the series." },
+  { sport:'NBA', em:'🏀', era:'90s', title:"Hakeem Olajuwon Dream Shake Highlights", desc:"The Dream Shake was the most unguardable post move in NBA history. Olajuwon faked out defenders so badly some of them fell over." },
+  { sport:'NBA', em:'🏀', era:'90s', title:"Charles Barkley Dream Team Barcelona 1992 Highlights", desc:"The greatest collection of basketball talent ever assembled. Barkley was the force of nature — averaging 18 points and doing whatever he wanted." },
+  { sport:'NBA', em:'🏀', era:'2000s', title:"Vince Carter Dunk Contest 2000", desc:"The greatest dunk contest performance ever. Carter invented moves on the spot, finished with an elbow-in-the-rim windmill, and walked off. Done." },
+  { sport:'NBA', em:'🏀', era:'2000s', title:"Vince Carter Dunks Over 7-foot Frederic Weis — 2000 Olympics", desc:"Carter takes off from the free throw line, flies over the standing French center, and throws it down. The French press called it 'The Move of Death.'" },
+  { sport:'NBA', em:'🏀', era:'2000s', title:"Allen Iverson Crossover on Michael Jordan 1997", desc:"A 22-year-old Iverson puts Jordan on his back with a crossover dribble in his rookie year. Jordan still won the championship. But that moment was Iverson's." },
+  { sport:'NBA', em:'🏀', era:'2010s', title:"Kevin Durant Scores 54 Points vs Golden State 2014", desc:"Durant put up 54 on the team that would eventually lure him away. One of the most complete offensive performances the modern NBA has seen." },
+  { sport:'NBA', em:'🏀', era:'2010s', title:"Derrick Rose Youngest MVP Season Highlights 2011", desc:"At 22, Rose became the youngest MVP in NBA history. His explosion off the dribble was unlike anything the league had seen in years." },
+  { sport:'NBA', em:'🏀', era:'2020s', title:"Giannis Antetokounmpo 50-Point Finals Game 6", desc:"Giannis put up 50 points and 14 rebounds to close out the Suns and win Milwaukee's first title in 50 years. One of the best individual Finals performances ever." },
+  { sport:'NBA', em:'🏀', era:'2020s', title:"Ja Morant's Best Dunks and Highlights", desc:"The most electric young player in the NBA. Morant's leaping ability and fearlessness make every drive to the basket must-watch television." },
+  { sport:'NBA', em:'🏀', era:'2020s', title:"Nikola Jokic Triple-Double Masterclass — 2023 Finals", desc:"The Joker won Finals MVP with a historic series. The most unique superstar in basketball — a 7-foot center who sees the game like a point guard." },
+
+  // ── MLB (additional) ──
+  { sport:'MLB', em:'⚾', era:'PRE-1980', title:"Willie Mays' Over-the-Shoulder Catch — 1954 World Series", desc:"Running full speed toward the center field wall, Mays catches Vic Wertz's 460-foot drive over his shoulder, whips around, and throws. Simply called 'The Catch.'" },
+  { sport:'MLB', em:'⚾', era:'PRE-1980', title:"Nolan Ryan's Record 7th No-Hitter 1991", desc:"At age 44, Ryan struck out 16 batters for his seventh no-hitter. He punched out Robin Ventura to end it, then Ventura charged the mound. Big mistake." },
+  { sport:'MLB', em:'⚾', era:'80s', title:"Ozzie Smith's Walk-Off Homer — 1985 NLCS", desc:"Ozzie Smith had never hit a left-handed home run in his career. He hit one off Tom Niedenfuer in the ninth. Jack Buck: 'Go crazy folks, go crazy!'" },
+  { sport:'MLB', em:'⚾', era:'80s', title:"Dave Henderson's ALCS Homer — 1986", desc:"Two strikes, two outs, ninth inning, Angels one strike from the World Series. Henderson hits a two-run homer. Boston fans have seen this movie before — but not the ending." },
+  { sport:'MLB', em:'⚾', era:'90s', title:"Ken Griffey Jr. Best Home Runs and Catches", desc:"The sweetest swing in baseball history. Griffey made robbing home runs look routine and hitting them look effortless. The Kid at his best." },
+  { sport:'MLB', em:'⚾', era:'90s', title:"Edgar Martinez's Double — 1995 ALDS", desc:"The Mariners down to their last strike in the 11th. Martinez rips a double down the line. Griffey scores from first. The Kingdome explodes." },
+  { sport:'MLB', em:'⚾', era:'2000s', title:"Barry Bonds Hits His 756th Home Run 2007", desc:"Bond surpasses Hank Aaron as the all-time home run king. Whatever your view of the era, the ball left the yard faster than almost anyone in history." },
+  { sport:'MLB', em:'⚾', era:'2000s', title:"David Ortiz Walk-Off Grand Slam — 2004 ALCS", desc:"Tied in the 12th, Big Papi swings on the first pitch and launches it into the bullpen. The Red Sox stay alive. The comeback from 3-0 begins." },
+  { sport:'MLB', em:'⚾', era:'2010s', title:"Madison Bumgarner's World Series Dominance 2014", desc:"MadBum threw 52⅔ innings in the 2014 postseason, including a complete game shutout and five innings of relief in Game 7. One of the greatest October performances ever." },
+  { sport:'MLB', em:'⚾', era:'2010s', title:"Mike Trout Career Highlights — The Best Player of His Generation", desc:"Back-to-back homers, ridiculous catches, impossible throws. Trout is the most complete baseball player since Willie Mays." },
+  { sport:'MLB', em:'⚾', era:'2020s', title:"Shohei Ohtani Two-Way Dominance Highlights", desc:"Starting pitcher. Cleanup hitter. The only player in a century to dominate on both sides of the ball. Ohtani is baseball's greatest what-if made real." },
+  { sport:'MLB', em:'⚾', era:'2020s', title:"Freddie Freeman's Walk-Off Grand Slam — 2024 World Series Game 1", desc:"Freeman battling through an ankle injury, bases loaded, two strikes, extra innings. He crushes it. Dodger Stadium loses its mind." },
+
+  // ── NHL (additional) ──
+  { sport:'NHL', em:'🏒', era:'PRE-1980', title:"Bobby Orr's Flying Goal — 1970 Stanley Cup", desc:"Orr scores in overtime to win the Cup for Boston, then gets tripped and goes airborne. That image — arms outstretched, horizontal in the air — is hockey's most iconic photo." },
+  { sport:'NHL', em:'🏒', era:'80s', title:"The Canada Cup 1987 — Gretzky to Lemieux", desc:"Gretzky feeds Lemieux in the slot with 1:26 left in Game 3. Lemieux one-times it past Tretiak. The two greatest players of their era combining on the most beautiful goal ever." },
+  { sport:'NHL', em:'🏒', era:'90s', title:"Martin Brodeur's Best Saves Compilation", desc:"The most wins in NHL history. Brodeur won three Cups in New Jersey with a style so calm and efficient it almost looked boring — until you realized nobody could score on him." },
+  { sport:'NHL', em:'🏒', era:'2000s', title:"Alex Ovechkin's Goal of the Year 2006", desc:"Ovechkin falls down on his back, behind the goal line, and still somehow scoops it in backhand over the goalie. It was his first NHL season. Nobody had seen anything like it." },
+  { sport:'NHL', em:'🏒', era:'2010s', title:"Jonathan Toews and the Blackhawks Dynasty", desc:"Three Cups in six years. Toews was the heartbeat — unflappable, responsible in every zone, and always at his best when the games meant the most." },
+  { sport:'NHL', em:'🏒', era:'2020s', title:"Auston Matthews 60-Goal Season Highlights", desc:"Matthews became the first Maple Leaf to score 60 goals in a season since the 1970s. His shot release is the fastest in the modern game." },
+  { sport:'NHL', em:'🏒', era:'2020s', title:"Nathan MacKinnon Best Plays — The Most Dominant Force in Hockey", desc:"From end to end, MacKinnon does things that shouldn't be possible at top speed. Colorado finally got their Cup in 2022 and he was the engine." },
+
+  // ── SOCCER (additional) ──
+  { sport:'SOCCER', em:'⚽', era:'PRE-1980', title:"Johan Cruyff Turn — 1974 World Cup", desc:"Cruyff fakes a cross, drags the ball behind his standing leg, and leaves the Swedish defender completely fooled. A move so iconic it bears his name forever." },
+  { sport:'SOCCER', em:'⚽', era:'80s', title:"Marco van Basten's Volley — Euro 1988 Final", desc:"An impossible angle, a looping cross, and van Basten volleys it into the far top corner. Goalkeepers still have nightmares about it." },
+  { sport:'SOCCER', em:'⚽', era:'90s', title:"Roberto Carlos Free Kick vs France 1997", desc:"The ball curves so violently it defies physics — a ball boy even ducked thinking it was going out. One of the most celebrated free kicks in history." },
+  { sport:'SOCCER', em:'⚽', era:'2000s', title:"Ronaldinho's Best Goals and Skills 2004–2006", desc:"The most joyful footballer ever. Ronaldinho played with a smile that made defenders smile too — right before he destroyed them." },
+  { sport:'SOCCER', em:'⚽', era:'2000s', title:"Zinedine Zidane World Cup 1998 Final Header Brace", desc:"Zidane heads in two corners in the first half against Brazil. France wins the World Cup at home. The Stade de France erupts." },
+  { sport:'SOCCER', em:'⚽', era:'2010s', title:"Messi's 91 Goals in a Calendar Year — 2012", desc:"Messi broke Gerd Müller's 40-year-old record of most goals in a calendar year, finishing with 91. He scored in 60 different games." },
+  { sport:'SOCCER', em:'⚽', era:'2010s', title:"Cristiano Ronaldo's Bicycle Kick vs Juventus 2018", desc:"A flying bicycle kick in the Champions League. So spectacular that even the Juventus fans in Turin stood to applaud the opposing player." },
+  { sport:'SOCCER', em:'⚽', era:'2010s', title:"Ramos's Extra-Time Header — Champions League Final 2014", desc:"Real Madrid trailing Atletico with seconds left. Ramos rises and heads in the corner. The Decima is alive. Madrid win on penalties." },
+  { sport:'SOCCER', em:'⚽', era:'2020s', title:"Erling Haaland's Debut Season at Man City — 36 Goals", desc:"In his first Premier League season, Haaland broke the all-time scoring record with 36 goals. He made it look effortless and slightly terrifying." },
+  { sport:'SOCCER', em:'⚽', era:'2020s', title:"Kylian Mbappé's Hat-Trick — 2022 World Cup Final", desc:"France trailing 3-2 in the final with ten minutes left. Mbappé scores to tie it, then scores the penalty to win it in shootout. The most dramatic final in World Cup history." },
+
+  // ── TENNIS (additional) ──
+  { sport:'TENNIS', em:'🎾', era:'PRE-1980', title:"Björn Borg vs John McEnroe — Wimbledon 1980 Final", desc:"The tiebreak in the fourth set lasted 34 points. Borg saved five match points. McEnroe finally won it — then Borg won the match. One of the greatest sets ever played." },
+  { sport:'TENNIS', em:'🎾', era:'80s', title:"John McEnroe's Best Shots and Greatest Moments", desc:"The most gifted touch player of his era. McEnroe could do things with a racket that looked improvised — because they were, and they still went in." },
+  { sport:'TENNIS', em:'🎾', era:'90s', title:"Pete Sampras's Wimbledon Dominance — 7 Titles", desc:"Sampras won Wimbledon seven times in eight years. His serve was a weapon. His volleys were poetry. And he never seemed to break a sweat." },
+  { sport:'TENNIS', em:'🎾', era:'2000s', title:"Serena Williams Career Highlights — The Greatest of All Time", desc:"23 Grand Slam singles titles. An all-time serve. A competitive fire that never dimmed. Serena is simply the greatest women's tennis player in history." },
+  { sport:'TENNIS', em:'🎾', era:'2010s', title:"Novak Djokovic's Best Matches and Unbreakable Defense", desc:"The most complete defender in tennis history. Djokovic returns balls that have no right to come back — and then wins the point." },
+  { sport:'TENNIS', em:'🎾', era:'2020s', title:"Carlos Alcaraz Wins Wimbledon 2023 — Beating Djokovic", desc:"20 years old, defeating the greatest of his era on the biggest stage. Alcaraz's athleticism and court sense felt like the arrival of something new." },
+
+  // ── BOXING (additional) ──
+  { sport:'BOXING', em:'🥊', era:'PRE-1980', title:"Ali vs Sonny Liston — Round 1 KO 1965", desc:"Ali dropped Liston with a punch so fast cameras barely caught it. Liston didn't get up. Ali stood over him shouting. The world didn't know what to make of it." },
+  { sport:'BOXING', em:'🥊', era:'80s', title:"Sugar Ray Leonard vs Marvelous Marvin Hagler 1987", desc:"Leonard came out of retirement to fight the middleweight champion. He outboxed Hagler across 12 rounds in a split-decision that people still argue about today." },
+  { sport:'BOXING', em:'🥊', era:'90s', title:"Oscar De La Hoya vs Julio César Chávez 1996", desc:"Two unbeaten world champions. De La Hoya bloodied Chávez so badly the fight was stopped in the fourth. A torch-passing moment between generations." },
+  { sport:'BOXING', em:'🥊', era:'2000s', title:"Manny Pacquiao vs Erik Morales III — The Trilogy", desc:"Pacquiao lost the first, won the second, and destroyed Morales in three rounds in the third. One of the great rivalries of the era." },
+  { sport:'BOXING', em:'🥊', era:'2010s', title:"Canelo Álvarez vs Gennady Golovkin — Trilogy", desc:"Three brutal fights. Two of the best middleweights in a generation trading shots across 36 rounds. One of boxing's most compelling recent rivalries." },
+  { sport:'BOXING', em:'🥊', era:'2020s', title:"Oleksandr Usyk Unifies Heavyweight Division 2021", desc:"Usyk outboxed Anthony Joshua across 12 rounds to become unified heavyweight champion. Masterful footwork, exceptional combinations, total control." },
+
+  // ── OLYMPICS (additional) ──
+  { sport:'OLYMPICS', em:'🥇', era:'PRE-1980', title:"Jesse Owens Wins 4 Gold Medals — Berlin 1936", desc:"In front of Adolf Hitler, Jesse Owens won the 100m, 200m, long jump, and 4x100 relay. The most meaningful collection of gold medals in Olympic history." },
+  { sport:'OLYMPICS', em:'🥇', era:'PRE-1980', title:"Nadia Comaneci's Perfect 10 — Montreal 1976", desc:"The scoreboard wasn't built to show a 10.00 — it showed 1.00. The 14-year-old Romanian gymnast had done something the Olympics had never seen." },
+  { sport:'OLYMPICS', em:'🥇', era:'80s', title:"Florence Griffith-Joyner\'s 10.49 World Record — Seoul 1988", desc:"FloJo ran the 100m in 10.49 seconds — a world record that still stands today. She did it in a one-legged bodysuit she designed herself." },
+  { sport:'OLYMPICS', em:'🥇', era:'90s', title:"Derek Redmond Finishes the Race — Barcelona 1992", desc:"Redmond tears his hamstring in the 400m semifinal. He refuses to stop. His father runs from the stands to help him across the finish line. Pure Olympics." },
+  { sport:'OLYMPICS', em:'🥇', era:'2000s', title:"Liu Xiang Wins 110m Hurdles — Athens 2004", desc:"Liu became the first Chinese man to win an Olympic sprint gold. A nation of 1.3 billion went wild. He equaled the world record at 12.91 seconds." },
+  { sport:'OLYMPICS', em:'🥇', era:'2010s', title:"Mo Farah's Olympic Double — London 2012 and Rio 2016", desc:"Farah won the 5,000m and 10,000m at two consecutive Olympics — four gold medals in total. He became Britain's greatest distance runner." },
+  { sport:'OLYMPICS', em:'🥇', era:'2020s', title:"Mondo Duplantis Pole Vault World Record — Paris 2024", desc:"Duplantis cleared 6.25 meters at the Paris Olympics to break his own world record on the biggest stage. He celebrated like he'd been waiting his whole life for that moment." },
+  { sport:'OLYMPICS', em:'🥇', era:'2020s', title:"Noah Lyles Wins 100m by 0.005 Seconds — Paris 2024", desc:"The closest 100m finish in Olympic history. Lyles dipped at the line and beat Kishane Thompson by five milliseconds. He didn't know he'd won until they showed the photo." },
+
+  // ── GOLF (additional) ──
+  { sport:'GOLF', em:'⛳', era:'80s', title:"Seve Ballesteros's Greatest Shots", desc:"The most creative golfer who ever played. Ballesteros invented recovery shots that nobody else had even imagined, and hit them under pressure." },
+  { sport:'GOLF', em:'⛳', era:'90s', title:"Phil Mickelson's Greatest Career Moments", desc:"Lefty's flop shots, impossible recoveries, and bold Sunday charges made him one of the most entertaining golfers in history over a 30-year career." },
+  { sport:'GOLF', em:'⛳', era:'2000s', title:"Tiger Woods' 15-Shot Win at 2000 US Open", desc:"Tiger demolished the field at Pebble Beach by 15 strokes. Second place finished at even par. It wasn't a tournament — it was a demonstration." },
+  { sport:'GOLF', em:'⛳', era:'2010s', title:"Bubba Watson's Hook Shot from the Trees — 2012 Masters", desc:"In the playoff, Watson's ball was in the pine straw with no conventional shot available. He hooked a 52-degree wedge 40 yards around trees onto the green. And made the putt." },
+  { sport:'GOLF', em:'⛳', era:'2020s', title:"Jon Rahm's Back-to-Back Hole-in-One at Augusta 2023", desc:"Rahm made a hole-in-one on the 16th in the Par 3 Contest — then made another on the same hole the very next day during the tournament. Astronomical odds." },
+
+  // ── MMA (additional) ──
+  { sport:'MMA', em:'🤼', era:'2000s', title:"Chuck Liddell vs Tito Ortiz — UFC 47", desc:"The most anticipated rivalry in early UFC history. Liddell knocked out Ortiz in the second round and cemented his status as the most feared striker in MMA." },
+  { sport:'MMA', em:'🤼', era:'2000s', title:"Anderson Silva's Best KOs — The Spider's Prime", desc:"Silva's striking precision was unlike anything UFC had ever seen. He taunted opponents, dropped his hands, and still knocked them out. Untouchable for years." },
+  { sport:'MMA', em:'🤼', era:'2010s', title:"Ronda Rousey Dominates — Sub-Minute Finishes", desc:"Rousey revolutionized women's MMA. Her armbar was so fast and inevitable that she finished multiple title defenses in under a minute." },
+  { sport:'MMA', em:'🤼', era:'2010s', title:"Jon Jones vs Daniel Cormier — The Light Heavyweight Wars", desc:"Two of the best to ever compete at 205 pounds. Their fights were chess matches punctuated by moments of raw violence. The rivalry defined an era." },
+  { sport:'MMA', em:'🤼', era:'2020s', title:"Alex Pereira's Miraculous Comeback KO vs Jiří Procházka", desc:"Down and nearly finished in the fifth round, Pereira throws one right hand and ends it. One of the most shocking finishes in UFC title history." },
+
+  // ── EXTREME (additional) ──
+  { sport:'EXTREME', em:'🛹', era:'80s', title:"Michael Jordan Dunk From the Free Throw Line — 1988 Slam Dunk", desc:"Jordan literally takes off from the free throw line, ball in one hand, glides through the air, and throws it down. The dunk contest was never the same." },
+  { sport:'EXTREME', em:'🛹', era:'2000s', title:"Danny Way Jumps the Great Wall of China 2005", desc:"Way built a mega ramp in China, dropped in at 75mph, and launched over a section of the Great Wall. On a skateboard. While recovering from a dislocated ankle." },
+  { sport:'EXTREME', em:'🛹', era:'2010s', title:"Nyjah Huston's Best Street Skating Highlights", desc:"Huston is the most dominant competition skateboarder of his generation — clean, technical, and able to land tricks on rails and ledges that stop other pros in their tracks." },
+  { sport:'EXTREME', em:'🛹', era:'2020s', title:"Yuto Horigome Wins First Olympic Skateboarding Gold — Tokyo 2021", desc:"Skateboarding's first Olympic champion. Horigome landed a near-perfect run in the final trick to jump from fourth to first. The crowd at Ariake Urban Sports Park erupted." },
+  { sport:'EXTREME', em:'🛹', era:'2010s', title:"Kelly Slater Wins 11th World Surf Title 2011", desc:"The most dominant athlete in any individual sport. Slater won eleven world titles across four decades. His surfing at Pipeline is simply the best ever witnessed." },
+  { sport:'EXTREME', em:'🛹', era:'2020s', title:"Travis Pastrana's Freestyle Motocross Double Backflip — X Games", desc:"Pastrana landed the first double backflip in competitive motocross history, raised his arms in celebration before the bike even landed. The crowd went completely silent, then insane." },
+
+];
+
+// ── STATE ──
+const STORAGE_KEY = 'highlight-reel-favs';
+const DISMISS_KEY = 'highlight-reel-install-dismissed';
+let selectedSport = 'ANY';
+let selectedEra = 'ALL';
+let lastPick = null;
+let currentResult = null;
+let favorites = loadFavorites();
+
+// ── HOME SCREEN TIP ──
+function showHomeTip() {
+  if (localStorage.getItem(DISMISS_KEY)) return;
+  const tip = document.getElementById('homeTip');
+  const text = document.getElementById('homeTipText');
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isAndroid = /android/i.test(navigator.userAgent);
+  if (isIOS) {
+    text.textContent = '📲 Add to home screen: tap the Share button in Safari, then "Add to Home Screen"';
+  } else if (isAndroid) {
+    text.textContent = '📲 Add to home screen: tap ⋮ in Chrome, then "Add to Home Screen"';
+  } else {
+    text.textContent = '📲 On mobile: tap Share in your browser and choose "Add to Home Screen" for quick access';
+  }
+  tip.style.display = 'flex';
+}
+
+function dismissTip() {
+  document.getElementById('homeTip').style.display = 'none';
+  localStorage.setItem(DISMISS_KEY, '1');
+}
+
+showHomeTip();
+
+// ── SHARE APP ──
+async function shareApp() {
+  const appUrl = window.location.href.split('?')[0];
+  const shareData = {
+    title: 'Highlight Reel',
+    text: '🏆 Random sports highlights — all sports, all eras, real YouTube links!',
+    url: appUrl
+  };
+
+  if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+    try {
+      await navigator.share(shareData);
+    } catch (e) {
+      if (e.name !== 'AbortError') copyToClipboard(appUrl, 'App link copied!');
+    }
+  } else {
+    copyToClipboard(appUrl, 'App link copied!');
+  }
+}
+
+// ── SHARE HIGHLIGHT ──
+async function shareHighlight() {
+  if (!currentResult) return;
+  const { highlight, ytUrl } = currentResult;
+  const text = `🏆 ${highlight.title}\n${highlight.desc}`;
+  const shareData = { title: highlight.title, text, url: ytUrl };
+
+  if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+    try {
+      await navigator.share(shareData);
+    } catch (e) {
+      if (e.name !== 'AbortError') copyToClipboard(ytUrl, 'Link copied!');
+    }
+  } else {
+    copyToClipboard(ytUrl, 'Link copied!');
+  }
+}
+
+// ── SHARE FROM FAVORITES ──
+async function shareFav(idx) {
+  const f = favorites[idx];
+  if (!f) return;
+  const text = `🏆 ${f.title}\n${f.desc}`;
+  const shareData = { title: f.title, text, url: f.ytUrl };
+
+  if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+    try { await navigator.share(shareData); }
+    catch (e) { if (e.name !== 'AbortError') copyToClipboard(f.ytUrl, 'Link copied!'); }
+  } else {
+    copyToClipboard(f.ytUrl, 'Link copied!');
+  }
+}
+
+// ── CLIPBOARD ──
+function copyToClipboard(text, successMsg) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('📋 ' + successMsg, true)).catch(() => fallbackCopy(text, successMsg));
+  } else {
+    fallbackCopy(text, successMsg);
+  }
+}
+
+function fallbackCopy(text, successMsg) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); showToast('📋 ' + successMsg, true); }
+  catch { showToast('Could not copy — try manually', false); }
+  document.body.removeChild(ta);
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg, success = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (success ? ' success' : '');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── TABS ──
+function switchTab(tabEl) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(`view-${tabEl.dataset.tab}`).classList.add('active');
+  if (tabEl.dataset.tab === 'favorites') renderFavorites();
+  if (tabEl.dataset.tab === 'trivia') initTrivia();
+}
+
+// ── FILTER INIT ──
+function init() {
+  document.querySelectorAll('#sportGrid .sport-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#sportGrid .sport-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedSport = btn.dataset.sport;
+    });
+  });
+
+  document.querySelectorAll('.era-row .era-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.era-row .era-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      selectedEra = chip.dataset.era;
+    });
+  });
+
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  updateFavCount();
+}
+
+// ── PICK ──
+function pickHighlight() {
+  let pool = HIGHLIGHTS.slice();
+  if (selectedSport !== 'ANY') pool = pool.filter(h => h.sport === selectedSport);
+  if (selectedEra !== 'ALL') pool = pool.filter(h => h.era === selectedEra);
+  if (!pool.length) return null;
+  if (pool.length > 1 && lastPick) pool = pool.filter(h => h !== lastPick);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ── LOADING UI ──
+function setLoading(loading, sub) {
+  const goBtn = document.getElementById('goBtn');
+  const searchBtn = document.getElementById('searchBtn');
+  goBtn.disabled = loading;
+  searchBtn.disabled = loading;
+  document.getElementById('dice').classList.toggle('spin', loading);
+  document.getElementById('loadingBox').classList.toggle('show', loading);
+  document.getElementById('loadingSub').textContent = sub || 'Searching the web for a verified link';
+  if (loading) {
+    document.getElementById('resultCard').classList.remove('show');
+    document.getElementById('errorBox').classList.remove('show');
+    showTrivia();
+  } else {
+    hideTrivia();
+    collapseHero();
+  }
+}
+
+function showError(msg) {
+  const b = document.getElementById('errorBox');
+  b.textContent = msg;
+  b.classList.add('show');
+}
+
+// ── ROLL ──
+async function roll() {
+  const pick = pickHighlight();
+  if (!pick) { showError('No highlights match those filters. Try a different sport or era.'); return; }
+  lastPick = pick;
+  setLoading(true);
+  try {
+    const ytUrl = await fetchRealYouTubeLink(pick.title, pick.sport);
+    setLoading(false);
+    showResult(pick, ytUrl);
+  } catch {
+    setLoading(false);
+    showError('Could not find a verified link right now. Try again!');
+  }
+}
+
+// ── SEARCH ──
+async function doSearch() {
+  const query = document.getElementById('searchInput').value.trim();
+  if (!query) return;
+  setLoading(true, `Searching for "${query}"…`);
+  try {
+    const result = await fetchSearchResult(query);
+    setLoading(false);
+    showResult(
+      { sport: result.sport, em: result.emoji, era: result.era, title: result.title, desc: result.description },
+      result.youtube_url
+    );
+  } catch {
+    setLoading(false);
+    showError('Could not find that highlight. Try different keywords.');
+  }
+}
+
+// ── YOUTUBE SEARCH LINK ──
+function fetchRealYouTubeLink(title, sport) {
+  const q = encodeURIComponent(title + ' ' + sport + ' highlights');
+  return Promise.resolve('https://www.youtube.com/results?search_query=' + q);
+}
+
+// ── SEARCH: free text ──
+function fetchSearchResult(query) {
+  const q = encodeURIComponent(query + ' sports highlights');
+  const url = 'https://www.youtube.com/results?search_query=' + q;
+  return Promise.resolve({
+    youtube_url: url,
+    title: query,
+    description: 'YouTube search results for: ' + query,
+    sport: 'GENERAL',
+    emoji: '🏆',
+    era: '2020s'
+  });
+}
+
+// ── RESULT DISPLAY ──
+function showResult(h, ytUrl) {
+  currentResult = { highlight: h, ytUrl };
+  document.getElementById('cardTag').textContent = `${h.em} ${h.sport}`;
+  document.getElementById('cardEra').textContent = h.era;
+  document.getElementById('cardTitle').textContent = h.title;
+  document.getElementById('cardDesc').textContent = h.desc;
+  document.getElementById('watchBtn').href = ytUrl;
+  updateFavBtn();
+  const card = document.getElementById('resultCard');
+  card.classList.remove('show');
+  card.offsetHeight;
+  card.classList.add('show');
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── FAVORITES ──
+function loadFavorites() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveFavorites() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites)); } catch {}
+}
+
+function favKey(h) { return `${h.sport}::${h.title}`; }
+function isFaved(h) { return favorites.some(f => favKey(f) === favKey(h)); }
+
+function toggleFav() {
+  if (!currentResult) return;
+  const { highlight, ytUrl } = currentResult;
+  const key = favKey(highlight);
+  if (isFaved(highlight)) {
+    favorites = favorites.filter(f => favKey(f) !== key);
+    showToast('Removed from favorites');
+  } else {
+    favorites.unshift({ ...highlight, ytUrl, savedAt: Date.now() });
+    showToast('❤️ Saved to favorites!', true);
+  }
+  saveFavorites();
+  updateFavBtn();
+  updateFavCount();
+}
+
+function updateFavBtn() {
+  if (!currentResult) return;
+  const btn = document.getElementById('favBtn');
+  const faved = isFaved(currentResult.highlight);
+  btn.textContent = faved ? '❤️' : '🤍';
+  btn.classList.toggle('faved', faved);
+  btn.title = faved ? 'Remove from favorites' : 'Save to favorites';
+}
+
+function updateFavCount() {
+  document.getElementById('favCount').textContent = favorites.length;
+}
+
+function renderFavorites() {
+  const list = document.getElementById('favList');
+  const empty = document.getElementById('favEmpty');
+  if (!favorites.length) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  list.innerHTML = favorites.map((f, i) => `
+    <div class="fav-item">
+      <span class="fav-emoji">${f.em}</span>
+      <div class="fav-info">
+        <div class="fav-title">${esc(f.title)}</div>
+        <div class="fav-meta">${f.sport} · ${f.era}</div>
+      </div>
+      <div class="fav-actions">
+        <a class="fav-btn watch" href="${esc(f.ytUrl)}" target="_blank" rel="noopener">▶</a>
+        <button class="fav-btn share-fav" onclick="shareFav(${i})" title="Share">📤</button>
+        <button class="fav-btn remove" onclick="removeFav(${i})" title="Remove">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function removeFav(idx) {
+  favorites.splice(idx, 1);
+  saveFavorites();
+  updateFavCount();
+  renderFavorites();
+  if (currentResult) updateFavBtn();
+  showToast('Removed from favorites');
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+
+// ── TRIVIA POOL ──
+const TRIVIA = [
+  "Michael Jordan was cut from his high school varsity basketball team as a sophomore.",
+  "Wayne Gretzky scored more assists in his career than any other player scored total points.",
+  "Wilt Chamberlain scored 100 points in a single NBA game — and no TV cameras were there to film it.",
+  "Babe Ruth started his MLB career as a pitcher, and was actually very good at it.",
+  "Usain Bolt burned about 1,000 calories running the 100m final in Beijing. It took him 9.69 seconds.",
+  "The first Super Bowl was not a sellout — nearly 33,000 seats sat empty at the LA Coliseum.",
+  "Pelé was only 17 years old when he won his first World Cup with Brazil in 1958.",
+  "Tiger Woods has won more PGA Tour events (82) than any other golfer in history.",
+  "Muhammad Ali's real name was Cassius Clay. He changed it after converting to Islam in 1964.",
+  "Roger Federer won Wimbledon five consecutive times, from 2003 to 2007.",
+  "Nadia Comaneci was the first gymnast to score a perfect 10 at the Olympics. She was 14 years old.",
+  "The NBA three-point line didn't exist until 1979. Larry Bird immediately loved it.",
+  "Jesse Owens' four gold medals at the 1936 Berlin Olympics happened over just 45 hours.",
+  "Michael Phelps has won more Olympic medals (28) than most countries in history.",
+  "Serena Williams won the 2017 Australian Open while 8 weeks pregnant.",
+  "Tom Brady was drafted in the 6th round of the NFL Draft — the 199th pick overall.",
+  "LeBron James was on the cover of Sports Illustrated at just 17 years old.",
+  "The longest point in professional tennis lasted 643 shots. It took over 29 minutes.",
+  "Manny Pacquiao is the only boxer to win world titles in eight different weight divisions.",
+  "Secretariat's winning margin at the 1973 Belmont Stakes (31 lengths) still stands as a record.",
+  "Simone Biles has more World Championship gold medals than any other gymnast, male or female.",
+  "The NBA's shot clock was invented in 1954 because teams were literally just holding the ball.",
+  "Kobe Bryant scored 81 points on January 22, 2006. He was 27 years old.",
+  "Barry Sanders retired at 30 with 1,457 yards rushing that season — and 2,358 fewer career yards than the record.",
+  "Reggie Miller\'s trash talk with Spike Lee became one of the most famous rivalries in NBA history.",
+  "The first recorded baseball game with modern rules was played in 1846 in Hoboken, New Jersey.",
+  "Djokovic has spent more weeks at World No. 1 in tennis than any other player in history.",
+  "Connor McDavid was given 'exceptional player' status at 15 — only the third player ever to receive it.",
+  "Shohei Ohtani is the first player since Babe Ruth to hit 30+ home runs and win 10+ games in the same season.",
+  "The soccer ball at the 1950 World Cup Final was so heavy it could knock a player out if it hit them in the head while wet.",
+  "Mike Tyson became the youngest heavyweight boxing champion in history at age 20.",
+  "Bo Jackson is the only athlete to be named an All-Star in both the NFL and MLB.",
+  "Wayne Gretzky's daughter Paulina is married to golfer Dustin Johnson.",
+  "The 1992 US Olympic Basketball 'Dream Team' won every game by an average of nearly 44 points.",
+  "Tony Hawk's first 900 was so legendary the X Games extended time specifically so he could keep trying.",
+  "Michael Jordan won six NBA championships and was Finals MVP every single time.",
+  "The fastest recorded serve in tennis history was hit by Sam Groth at 163.7 mph.",
+  "Lionel Messi scored 91 goals in a single calendar year (2012), breaking a 40-year-old world record.",
+  "Cal Ripken Jr. played 2,632 consecutive games — a streak that lasted 16 years.",
+  "Kareem Abdul-Jabbar is the NBA\'s all-time leading scorer with 38,387 points.",
+];
+
+let triviaIndex = 0;
+
+function showTrivia() {
+  const el = document.getElementById('triviaCard');
+  const txt = document.getElementById('triviaText');
+  txt.textContent = TRIVIA[triviaIndex % TRIVIA.length];
+  triviaIndex++;
+  el.classList.remove('show');
+  el.offsetHeight;
+  el.classList.add('show');
+}
+
+function hideTrivia() {
+  document.getElementById('triviaCard').classList.remove('show');
+}
+
+// ── HERO BACKGROUND EMOJIS ──
+function initHeroBg() {
+  const emojis = ['🏈','🏀','⚾','🏒','⚽','🎾','🥊','🥇','⛳','🤼','🛹','🏆','🎯','🏅'];
+  const bg = document.getElementById('heroBg');
+  if (!bg) return;
+  emojis.forEach((em, i) => {
+    const span = document.createElement('span');
+    span.textContent = em;
+    span.style.left = (5 + (i * 7) % 90) + '%';
+    span.style.animationDuration = (12 + (i * 3.7) % 14) + 's';
+    span.style.animationDelay = (i * 1.1) + 's';
+    span.style.fontSize = (1.2 + (i % 3) * 0.5) + 'rem';
+    bg.appendChild(span);
+  });
+}
+
+// ── COLLAPSE HERO after first result ──
+function collapseHero() {
+  const hero = document.getElementById('hero');
+  const sotd = document.getElementById('sotdCard');
+  if (hero && !hero.classList.contains('collapsed')) {
+    hero.style.transition = 'opacity 0.3s, max-height 0.4s';
+    hero.style.opacity = '0';
+    setTimeout(() => hero.classList.add('collapsed'), 350);
+  }
+  // sotd stays visible at bottom
+}
+
+// ── SPORT OF THE DAY ──
+function getSotdHighlight() {
+  // Deterministic by date — same highlight for everyone on same day
+  const today = new Date();
+  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+  return HIGHLIGHTS[dayOfYear % HIGHLIGHTS.length];
+}
+
+let sotdHighlight = null;
+let sotdLoaded = false;
+
+function initSotd() {
+  sotdHighlight = getSotdHighlight();
+  document.getElementById('sotdIcon').textContent = sotdHighlight.em;
+  document.getElementById('sotdTitle').textContent = sotdHighlight.title;
+}
+
+async function loadSotd() {
+  if (sotdLoaded) return;
+  sotdLoaded = true;
+
+  const card = document.getElementById('sotdCard');
+  const cta  = card.querySelector('.sotd-cta');
+  const origCta = cta.textContent;
+  cta.textContent = 'Loading…';
+  card.style.opacity = '0.65';
+  card.style.pointerEvents = 'none';
+
+  try {
+    const ytUrl = await fetchRealYouTubeLink(sotdHighlight.title, sotdHighlight.sport);
+    // Show in result card + scroll to it
+    showResult(sotdHighlight, ytUrl);
+    // Also open YouTube
+    window.open(ytUrl, '_blank', 'noopener');
+    cta.textContent = '✓ Loaded';
+  } catch {
+    showToast('Could not load — tap to try again', false);
+    sotdLoaded = false;
+    cta.textContent = origCta;
+  } finally {
+    card.style.opacity = '1';
+    card.style.pointerEvents = '';
+  }
+}
+
+
+// ── FACTS DATA ──
+const FACTS = [
+  { sport:'NBA',     em:'🏀', text:'Michael Jordan was cut from his high school varsity basketball team as a sophomore. He used it as motivation for the rest of his career.' },
+  { sport:'NHL',     em:'🏒', text:'Wayne Gretzky scored more assists in his career than any other player scored total points — including goals. He is the only player this is true of.' },
+  { sport:'NBA',     em:'🏀', text:'Wilt Chamberlain scored 100 points in a single NBA game on March 2, 1962. No TV cameras were there to film it — only a single radio broadcaster.' },
+  { sport:'MLB',     em:'⚾', text:'Babe Ruth started his MLB career as a pitcher and was genuinely outstanding at it, posting a 94-46 record before switching to the outfield.' },
+  { sport:'OLYMPICS',em:'🥇', text:'Usain Bolt burned about 1,000 calories during the 100m final in Beijing. The whole race took him 9.69 seconds.' },
+  { sport:'NFL',     em:'🏈', text:'The first Super Bowl was not a sellout — nearly 33,000 seats sat empty at the LA Coliseum. Tickets cost $6 to $12.' },
+  { sport:'SOCCER',  em:'⚽', text:'Pelé was only 17 years old when he won his first World Cup with Brazil in 1958, making him the youngest player ever to win the tournament.' },
+  { sport:'GOLF',    em:'⛳', text:'Tiger Woods has won more PGA Tour events (82) than any other golfer in history and held the world No. 1 ranking for a total of 683 weeks.' },
+  { sport:'BOXING',  em:'🥊', text:"Muhammad Ali's real name was Cassius Clay. He changed it in 1964 after converting to Islam, calling his birth name a 'slave name.'" },
+  { sport:'TENNIS',  em:'🎾', text:'Roger Federer won Wimbledon five consecutive times from 2003 to 2007, a run most experts considered unrepeatable — until Djokovic repeated it.' },
+  { sport:'OLYMPICS',em:'🥇', text:'Nadia Comaneci was the first gymnast to score a perfect 10 at the Olympics. The scoreboard was not built to show 10.00, so it displayed 1.00.' },
+  { sport:'NBA',     em:'🏀', text:'The NBA three-point line did not exist until 1979. In his first season with the line, Larry Bird led the league in three-pointers made.' },
+  { sport:'OLYMPICS',em:'🥇', text:"Jesse Owens' four gold medals at the 1936 Berlin Olympics happened over just 45 hours — and he qualified for all four events on the same day." },
+  { sport:'OLYMPICS',em:'🥇', text:'Michael Phelps has won more Olympic medals (28) than 100 countries have ever won in the entire history of the Games.' },
+  { sport:'TENNIS',  em:'🎾', text:'Serena Williams won the 2017 Australian Open while 8 weeks pregnant, making it her 23rd Grand Slam title — a record in the Open Era.' },
+  { sport:'NFL',     em:'🏈', text:'Tom Brady was drafted in the 6th round of the 2000 NFL Draft as the 199th overall pick. Six teams passed on him four times over.' },
+  { sport:'NBA',     em:'🏀', text:'LeBron James was on the cover of Sports Illustrated at just 17 years old, under the headline "The Chosen One." He had not yet played a pro game.' },
+  { sport:'TENNIS',  em:'🎾', text:'The longest point in professional tennis lasted 643 shots in a 2013 match between Fabrice Martin and Samuel Groth. It took over 29 minutes.' },
+  { sport:'BOXING',  em:'🥊', text:'Manny Pacquiao is the only boxer in history to win world titles in eight different weight divisions — across three different decades.' },
+  { sport:'EXTREME', em:'🛹', text:"Secretariat's winning margin at the 1973 Belmont Stakes was 31 lengths — he won by so far that the second-place horse couldn't even be seen in the same camera shot." },
+  { sport:'OLYMPICS',em:'🥇', text:'Simone Biles has more World Championship gold medals than any other gymnast in history, male or female, with 23 world titles.' },
+  { sport:'NBA',     em:'🏀', text:'The NBA shot clock was introduced in 1954 because teams were literally just holding the ball and not shooting. One game ended 19-18.' },
+  { sport:'NBA',     em:'🏀', text:'Kobe Bryant scored 81 points against the Toronto Raptors on January 22, 2006. The second-highest single-game total in NBA history.' },
+  { sport:'NFL',     em:'🏈', text:'Barry Sanders retired at 30, mid-career, with 1,457 yards rushing that season. He finished just 1,458 yards short of Walter Payton\'s all-time record.' },
+  { sport:'NBA',     em:'🏀', text:'Reggie Miller\'s trash talk with Spike Lee became so famous it was turned into an ESPN 30 for 30 documentary. Spike Lee genuinely despised him.' },
+  { sport:'MLB',     em:'⚾', text:'The first officially recorded baseball game with modern rules was played on June 19, 1846 in Hoboken, New Jersey. The New York Nine beat the Knickerbockers 23-1.' },
+  { sport:'TENNIS',  em:'🎾', text:'Novak Djokovic has spent more weeks at World No. 1 in tennis than any other player in history — over 400 weeks and counting.' },
+  { sport:'NHL',     em:'🏒', text:'Connor McDavid was given "exceptional player" status at age 15, allowing him to enter the OHL a year early. Only three players have ever received this designation.' },
+  { sport:'MLB',     em:'⚾', text:'Shohei Ohtani is the first player since Babe Ruth to hit 30+ home runs and win 10+ games in the same season — a gap of roughly 100 years.' },
+  { sport:'GENERAL', em:'🏆', text:'The soccer ball at the 1950 World Cup was so heavy when wet that heading it could cause serious injury. Players regularly complained of headaches after matches.' },
+  { sport:'BOXING',  em:'🥊', text:'Mike Tyson became the youngest heavyweight boxing champion in history at age 20, defeating Trevor Berbick in 1986 in just two rounds.' },
+  { sport:'NFL',     em:'🏈', text:'Bo Jackson is the only athlete in history to be named an All-Star in both the NFL Pro Bowl and MLB All-Star Game — and he did it in the same calendar year.' },
+  { sport:'GENERAL', em:'🏆', text:'The 1992 US Olympic Basketball Dream Team won every game by an average of nearly 44 points. Their closest game was a 32-point victory.' },
+  { sport:'EXTREME', em:'🛹', text:"Tony Hawk's first 900 at the 1999 X Games was so dramatic the competition was officially over — judges extended time specifically so he could keep attempting it." },
+  { sport:'NBA',     em:'🏀', text:'Michael Jordan won six NBA championships and was named Finals MVP all six times. He never lost a Finals series in his career.' },
+  { sport:'TENNIS',  em:'🎾', text:'The fastest recorded serve in tennis history was 163.7 mph, hit by Sam Groth at a Challenger event in 2012. It was too fast to return.' },
+  { sport:'SOCCER',  em:'⚽', text:'Lionel Messi scored 91 goals in a single calendar year in 2012, breaking Gerd Müller\'s 40-year-old record. He scored in 60 different games.' },
+  { sport:'MLB',     em:'⚾', text:'Cal Ripken Jr. played in 2,632 consecutive games, a streak that lasted 16 years. He never took a day off from 1982 to 1998.' },
+  { sport:'NBA',     em:'🏀', text:'Kareem Abdul-Jabbar is the NBA\'s all-time leading scorer with 38,387 points — a record that stood for nearly 40 years until LeBron James broke it in 2023.' },
+  { sport:'NFL',     em:'🏈', text:'Jerry Rice caught 1,549 passes for 22,895 yards and 197 touchdowns. His career receiving yards record is considered the most unbreakable in pro sports.' },
+  { sport:'OLYMPICS',em:'🥇', text:'Florence Griffith-Joyner\'s 100m world record of 10.49 seconds, set in 1988, still stands today — over 35 years later. Her fashion was as iconic as her speed.' },
+  { sport:'SOCCER',  em:'⚽', text:'The fastest goal ever scored in a professional game was 2.1 seconds. Ricardo Oliveira scored it from kickoff in a Brazilian league match in 2016.' },
+  { sport:'NHL',     em:'🏒', text:"Bobby Orr is the only defenseman in NHL history to lead the league in scoring — and he did it twice. His skating changed how the position was played forever." },
+  { sport:'MLB',     em:'⚾', text:'Nolan Ryan threw seven no-hitters across his career, more than any pitcher in history. His last one came at age 44. He also struck out 5,714 batters.' },
+  { sport:'GOLF',    em:'⛳', text:'Jack Nicklaus won 18 major championships, a record that stood for decades. Tiger Woods spent years chasing it and ended his career at 15.' },
+  { sport:'NBA',     em:'🏀', text:'Vince Carter played in the NBA for 22 seasons, from 1998 to 2020. He played in four different decades, a record for any player in league history.' },
+  { sport:'BOXING',  em:'🥊', text:"Sugar Ray Leonard came out of a five-year retirement to fight Marvin Hagler in 1987. He had fought only once in those five years. He won by split decision." },
+  { sport:'GENERAL', em:'🏆', text:'The Olympic motto is "Faster, Higher, Stronger — Together." The word "Together" was only added in 2021, 127 years after the original motto was created.' },
+  { sport:'NFL',     em:'🏈', text:'Peyton Manning set the NFL record for touchdown passes in a season with 55 in 2013. He was 37 years old. Tom Brady broke it with 50 the same year Manning retired.' },
+  { sport:'SOCCER',  em:'⚽', text:'Brazil is the only country to have qualified for every single FIFA World Cup — all 22 tournaments held since 1930. They have also won it five times.' },
+  { sport:'NHL',     em:'🏒', text:'Gordie Howe played professional hockey from 1946 to 1980 — a span of 34 years. He played his final NHL game at age 52.' },
+  { sport:'OLYMPICS',em:'🥇', text:'Carl Lewis won nine Olympic gold medals across four Olympics, from 1984 to 1996. He won the long jump at all four Games.' },
+  { sport:'MMA',     em:'🤼', text:'Anderson Silva held the UFC middleweight title for a record 2,457 days — nearly seven years. He defended it 10 consecutive times.' },
+  { sport:'EXTREME', em:'🛹', text:"Shaun White competed in his first X Games at age 13. He went on to win 18 X Games gold medals and three Olympic halfpipe titles across a 20-year career." },
+  { sport:'MLB',     em:'⚾', text:"Rickey Henderson stole 130 bases in a single season in 1982, a record that will almost certainly never be broken. He also holds the all-time stolen base record with 1,406." },
+  { sport:'GENERAL', em:'🏆', text:'The highest-paid athlete in history (adjusted for inflation) was arguably Gaius Appuleius Diocles, a Roman charioteer who won the equivalent of roughly $15 billion in prize money.' },
+  { sport:'NBA',     em:'🏀', text:"The NBA's youngest MVP ever was Derrick Rose, who won the award at age 22 in 2011. He is still the only player under 23 to win the award." },
+  { sport:'GOLF',    em:'⛳', text:'The hole-in-one odds for an average golfer are roughly 12,500 to 1. For a PGA Tour pro, the odds drop to about 2,500 to 1. Tiger Woods has had 20 career holes-in-one.' },
+  { sport:'TENNIS',  em:'🎾', text:"John McEnroe was so consistently angry at line calls that the ATP created a new rule — the 'McEnroe Rule' — specifically to manage his behavior on court." },
+  { sport:'NFL',     em:'🏈', text:'The longest field goal in NFL history is 66 yards, kicked by Justin Tucker of the Baltimore Ravens in 2021 — off the crossbar and through.' },
+  { sport:'SOCCER',  em:'⚽', text:'The 1950 World Cup final was attended by an estimated 200,000 fans in Rio de Janeiro — the largest crowd ever to watch a soccer match.' },
+  { sport:'BOXING',  em:'🥊', text:"George Foreman won the heavyweight championship at age 45, becoming the oldest heavyweight champion in history. He had been retired for 10 years before his comeback." },
+  { sport:'OLYMPICS',em:'🥇', text:'The marathon distance of 26.2 miles was standardized at the 1908 London Olympics so the race could finish in front of the royal box. Before that, it varied every Games.' },
+
+  // ── NFL ──
+  { sport:'NFL', em:'🏈', text:'The NFL was founded in 1920 as the American Professional Football Association with 14 teams. The entry fee was $100 per franchise.' },
+  { sport:'NFL', em:'🏈', text:'Jim Brown averaged 5.2 yards per carry for his entire NFL career — a record that has never been approached by any other running back in history.' },
+  { sport:'NFL', em:'🏈', text:'Deion Sanders is the only athlete to hit a home run in MLB and score a touchdown in the NFL in the same week. He did it twice.' },
+  { sport:'NFL', em:'🏈', text:'The huddle was invented by a deaf football player named Paul Hubbard in 1894, so opponents couldn\'t read his team\'s sign language.' },
+  { sport:'NFL', em:'🏈', text:'Brett Favre threw 508 career touchdown passes and started 297 consecutive regular season games — an NFL quarterback record.' },
+  { sport:'NFL', em:'🏈', text:'Dan Marino set the NFL single-season passing TD record in 1984 with 48 touchdowns. The record stood for 20 years until Peyton Manning broke it.' },
+  { sport:'NFL', em:'🏈', text:'The average NFL career lasts only 3.3 years. Running backs have the shortest average careers at about 2.5 years.' },
+  { sport:'NFL', em:'🏈', text:'Lawrence Taylor was so dominant that the NFL changed its rules specifically because of him — illegal use of hands and chop block rules were both modified in response to his play.' },
+  { sport:'NFL', em:'🏈', text:'Walter Payton missed only one game in his entire 13-year NFL career — due to a coach\'s decision in his first season, not injury.' },
+  { sport:'NFL', em:'🏈', text:'The two-minute warning originated from when official game clocks did not exist and the referee had to inform teams how much time remained.' },
+
+  // ── NBA ──
+  { sport:'NBA', em:'🏀', text:'The NBA was founded in 1946 with 11 teams. The original league was called the Basketball Association of America.' },
+  { sport:'NBA', em:'🏀', text:'Bill Russell won 11 NBA championships in 13 seasons with the Boston Celtics, including eight in a row. He also coached the team while playing.' },
+  { sport:'NBA', em:'🏀', text:'Shaquille O\'Neal was so dominant that referees created an unofficial rule called "Hack-a-Shaq" — intentionally fouling him to send him to the line where he shot 52%.' },
+  { sport:'NBA', em:'🏀', text:'Pete Maravich averaged 44.2 points per game in college — without a three-point line and without freshmen being eligible. He did it in three seasons.' },
+  { sport:'NBA', em:'🏀', text:'The basketball was originally brown. Tony Hinkle changed it to orange in 1957 so players and fans could see it better.' },
+  { sport:'NBA', em:'🏀', text:'Kevin Durant is the only player in NBA history to win the scoring title for seven consecutive seasons. He did it from 2010 to 2019 (excluding injury years).' },
+  { sport:'NBA', em:'🏀', text:'Isaiah Thomas scored 53 points on the day of his sister\'s funeral during the 2017 playoffs, one of the most emotionally charged performances in NBA history.' },
+  { sport:'NBA', em:'🏀', text:'Dennis Rodman won five NBA championships and led the league in rebounding seven consecutive years despite being only 6\'7" — small for a center.' },
+  { sport:'NBA', em:'🏀', text:'The first NBA All-Star Game in 1951 was almost cancelled due to low interest from team owners. It drew 10,094 fans and was a huge success.' },
+  { sport:'NBA', em:'🏀', text:'Steph Curry made 402 three-pointers in a single season in 2015-16, shattering his own record of 286 from the previous year.' },
+
+  // ── MLB ──
+  { sport:'MLB', em:'⚾', text:'Baseball has been played professionally since 1869. The Cincinnati Red Stockings were the first fully professional team, going 57-0 in their first season.' },
+  { sport:'MLB', em:'⚾', text:'The average lifespan of a baseball in an MLB game is just six pitches. Each game uses between 60 and 100 baseballs.' },
+  { sport:'MLB', em:'⚾', text:'Ted Williams hit .406 in 1941 — the last player to hit over .400 for a season. He was also a decorated fighter pilot who missed nearly five prime seasons to military service.' },
+  { sport:'MLB', em:'⚾', text:'Joe DiMaggio had a 56-game hitting streak in 1941 — a record many statisticians consider the most unbreakable in all of sports.' },
+  { sport:'MLB', em:'⚾', text:'Cy Young won 511 games in his career. The record is so untouchable that the annual award for best pitcher was named after him.' },
+  { sport:'MLB', em:'⚾', text:'Sandy Koufax was virtually unhittable in his prime — he retired at age 30 due to arthritis, with a career ERA of 2.76 and four no-hitters.' },
+  { sport:'MLB', em:'⚾', text:'The longest MLB game in history lasted 26 innings between the Brooklyn Robins and Boston Braves in 1920. It ended in a 1-1 tie due to darkness.' },
+  { sport:'MLB', em:'⚾', text:'Pete Rose has the most hits in MLB history with 4,256 — but is permanently banned from baseball for betting on games while he was a manager.' },
+  { sport:'MLB', em:'⚾', text:'An MLB pitcher\'s fastball spin rate, seam orientation, and release point are now tracked to within millimeters using radar and camera systems.' },
+  { sport:'MLB', em:'⚾', text:'In 2001, Ichiro Suzuki became the first position player from Japan to play in the MLB. He went on to get 3,089 MLB hits — on top of 1,278 in Japan.' },
+
+  // ── NHL ──
+  { sport:'NHL', em:'🏒', text:'The Stanley Cup is the oldest professional sports trophy in North America, first awarded in 1893. It has been lost, left at the bottom of a swimming pool, and used as a cereal bowl.' },
+  { sport:'NHL', em:'🏒', text:'Gordie Howe scored at least one goal in five different decades. He played his last NHL game at age 52.' },
+  { sport:'NHL', em:'🏒', text:'The NHL was the first major professional sports league to adopt helmets as mandatory equipment — but only for players entering the league after 1979.' },
+  { sport:'NHL', em:'🏒', text:'Martin Brodeur holds virtually every NHL goaltending record — wins, shutouts, and games played. He played 1,266 regular season games.' },
+  { sport:'NHL', em:'🏒', text:'NHL players skate at speeds up to 30 mph. The puck can travel at over 100 mph on a slap shot. The average game covers about 5 miles of skating per player.' },
+  { sport:'NHL', em:'🏒', text:'The NHL held its first outdoor game — the Heritage Classic — in Edmonton in 2003 in -18°C weather. Over 57,000 fans attended.' },
+  { sport:'NHL', em:'🏒', text:'Maurice "Rocket" Richard was the first player to score 50 goals in 50 games, in the 1944-45 season. It took nearly 40 years for anyone to surpass it.' },
+  { sport:'NHL', em:'🏒', text:'Patrick Roy won four Stanley Cups and two Conn Smythe trophies as playoff MVP. He revolutionized goaltending with the butterfly style.' },
+  { sport:'NHL', em:'🏒', text:'The fastest goal in NHL history was scored 4 seconds into a game by Doug Smail of the Winnipeg Jets in 1981.' },
+  { sport:'NHL', em:'🏒', text:'Hockey pucks are frozen before games to reduce bouncing. An NHL puck weighs 6 ounces and is 1 inch thick and 3 inches in diameter.' },
+
+  // ── SOCCER ──
+  { sport:'SOCCER', em:'⚽', text:'Soccer is the most popular sport in the world with an estimated 4 billion fans. The 2022 World Cup final was watched by over 1.5 billion people.' },
+  { sport:'SOCCER', em:'⚽', text:'Ronaldo (the Brazilian one) scored 15 World Cup goals in 1998, 2002, and 2006 — still the second-highest total in World Cup history.' },
+  { sport:'SOCCER', em:'⚽', text:'The fastest goal in World Cup history was scored by Hakan Şükür of Turkey just 10.8 seconds into a match against South Korea in 2002.' },
+  { sport:'SOCCER', em:'⚽', text:'Goalkeeper Manuel Neuer popularized the "sweeper-keeper" style — playing far outside the penalty box like an extra defender. It changed the position forever.' },
+  { sport:'SOCCER', em:'⚽', text:'The first FIFA World Cup was held in Uruguay in 1930. Uruguay won it on home soil, defeating Argentina 4-2 in the final.' },
+  { sport:'SOCCER', em:'⚽', text:'Miroslav Klose scored 16 World Cup goals across four tournaments, the most of any player in history. He was also known for never diving or faking fouls.' },
+  { sport:'SOCCER', em:'⚽', text:'In 1969, a war between Honduras and El Salvador lasted four days and was sparked partly by a heated World Cup qualifying series. It is called the Football War.' },
+  { sport:'SOCCER', em:'⚽', text:'A soccer ball has 32 panels — 20 hexagons and 12 pentagons — designed to approximate a sphere as closely as possible.' },
+  { sport:'SOCCER', em:'⚽', text:'Zinedine Zidane won the World Cup (1998), European Championship (2000), Champions League (2002), and was named FIFA World Player of the Year three times.' },
+  { sport:'SOCCER', em:'⚽', text:'The offsides rule in soccer has existed since 1863. It has been modified many times and remains one of the most debated calls in the sport.' },
+
+  // ── TENNIS ──
+  { sport:'TENNIS', em:'🎾', text:'Tennis balls were originally white. Yellow balls were introduced at Wimbledon in 1986 because they showed up better on TV.' },
+  { sport:'TENNIS', em:'🎾', text:'The fastest serve ever recorded in a Grand Slam was by John Isner at 253 km/h (157 mph) at the 2016 Davis Cup.' },
+  { sport:'TENNIS', em:'🎾', text:'Billie Jean King beat Bobby Riggs 6-4, 6-3, 6-3 in the 1973 "Battle of the Sexes" match in front of 30,000 fans and 90 million TV viewers.' },
+  { sport:'TENNIS', em:'🎾', text:'Rafael Nadal has won the French Open 14 times. Roland Garros\'s clay court is so associated with him that a statue of him stands outside the stadium.' },
+  { sport:'TENNIS', em:'🎾', text:'The word "love" meaning zero in tennis is thought to come from the French word "l\'oeuf" meaning egg — because zero looks like an egg.' },
+  { sport:'TENNIS', em:'🎾', text:'Jimmy Connors played professional tennis for 22 years and won 109 tournaments. He reached the US Open semifinals at age 39.' },
+  { sport:'TENNIS', em:'🎾', text:'Wimbledon is the oldest tennis tournament in the world, first played in 1877. Players are still required to wear predominantly white clothing.' },
+  { sport:'TENNIS', em:'🎾', text:'Monica Seles was stabbed on court by a deranged fan in 1993. She missed two years of tennis but returned to win the 1996 Australian Open.' },
+  { sport:'TENNIS', em:'🎾', text:'The US Open uses hardcourt, the French Open uses clay, and Wimbledon uses grass. Each surface plays so differently that specialists exist for each.' },
+  { sport:'TENNIS', em:'🎾', text:'Andre Agassi won all four Grand Slams and Olympic gold — a Career Golden Slam. He also admitted in his autobiography to using crystal meth in 1997.' },
+
+  // ── BOXING ──
+  { sport:'BOXING', em:'🥊', text:'Floyd Mayweather retired with a 50-0 professional record, making him the only undefeated boxer to retire as a world champion across five weight classes.' },
+  { sport:'BOXING', em:'🥊', text:'Rocky Marciano is the only heavyweight champion to retire undefeated, with a 49-0 record. He held the title from 1952 to 1956.' },
+  { sport:'BOXING', em:'🥊', text:'Joe Louis held the heavyweight championship for 11 years and 8 months — the longest of any heavyweight champion in history.' },
+  { sport:'BOXING', em:'🥊', text:'The Marquess of Queensberry Rules, which govern modern boxing, were introduced in 1867. They required gloves, three-minute rounds, and a 10-count for knockdowns.' },
+  { sport:'BOXING', em:'🥊', text:'Sugar Ray Robinson is widely considered the greatest pound-for-pound boxer of all time. He went 128-1-2 as an amateur and won 173 professional fights.' },
+  { sport:'BOXING', em:'🥊', text:'Vitali Klitschko holds a PhD in sports science and later became the mayor of Kyiv, Ukraine. His brother Wladimir also has a PhD.' },
+  { sport:'BOXING', em:'🥊', text:'Muhammad Ali\'s hands were so fast they could throw a jab and retract it in 40 milliseconds — faster than the human eye can track.' },
+  { sport:'BOXING', em:'🥊', text:'The longest professional boxing match in modern history lasted 110 rounds in 1893 between Andy Bowen and Jack Burke. It ended in a draw after 7 hours.' },
+
+  // ── OLYMPICS ──
+  { sport:'OLYMPICS', em:'🥇', text:'The Olympic Games were held every four years in ancient Greece from 776 BC to 393 AD — over 1,100 years. They were revived in Athens in 1896.' },
+  { sport:'OLYMPICS', em:'🥇', text:'The Olympic flame has been lit continuously since 1928. It travels from Olympia, Greece to the host city by torch relay before each Games.' },
+  { sport:'OLYMPICS', em:'🥇', text:'Eddie "The Eagle" Edwards finished last in both ski jumping events at the 1988 Calgary Olympics — and became one of the most beloved athletes in British history.' },
+  { sport:'OLYMPICS', em:'🥇', text:'Paavo Nurmi of Finland won nine Olympic gold medals in distance running between 1920 and 1928. He set 22 official world records.' },
+  { sport:'OLYMPICS', em:'🥇', text:'The 1904 St. Louis Olympics marathon was one of the strangest races in history. The winner was disqualified for taking a car. The second-place finisher was given strychnine as a stimulant by his trainer.' },
+  { sport:'OLYMPICS', em:'🥇', text:'Al Oerter won the discus throw at four consecutive Olympics from 1956 to 1968 — setting a new Olympic record each time.' },
+  { sport:'OLYMPICS', em:'🥇', text:'Gymnastics\' Code of Points scoring system replaced the perfect 10 after the 2004 Athens Olympics, following a judging scandal. Scores can now theoretically go above 20.' },
+  { sport:'OLYMPICS', em:'🥇', text:'At the 1936 Berlin Olympics, American Jesse Owens was reportedly treated better by German crowds than he was when he returned home to segregated America.' },
+  { sport:'OLYMPICS', em:'🥇', text:'The five Olympic rings represent the five inhabited continents of the world. Every national flag contains at least one of the five colors: blue, yellow, black, green, and red.' },
+  { sport:'OLYMPICS', em:'🥇', text:'Larisa Latynina of the Soviet Union won 18 Olympic gymnastics medals between 1956 and 1964 — a record that stood for 48 years until Michael Phelps broke it.' },
+
+  // ── GOLF ──
+  { sport:'GOLF', em:'⛳', text:'Golf is one of two sports played on the Moon. Alan Shepard hit a golf ball on the lunar surface during the Apollo 14 mission in 1971.' },
+  { sport:'GOLF', em:'⛳', text:'The first golf balls were made of leather stuffed with feathers. A skilled craftsman could only make three or four "featheries" per day.' },
+  { sport:'GOLF', em:'⛳', text:'Arnold Palmer helped make golf a mainstream TV sport in the 1950s and 60s. His fans were called "Arnie\'s Army" and he never had an official manager.' },
+  { sport:'GOLF', em:'⛳', text:'The Masters at Augusta National is the only major played at the same course every year. The course was designed by Bobby Jones and Alister MacKenzie in 1933.' },
+  { sport:'GOLF', em:'⛳', text:'Lee Trevino was once struck by lightning during a PGA Tour event in 1975. He went on to joke about it for the rest of his career.' },
+  { sport:'GOLF', em:'⛳', text:'The term "birdie" originated in 1899 when Ab Smith hit what he called a "bird of a shot" — one under par. The term spread from there.' },
+  { sport:'GOLF', em:'⛳', text:'Annika Sorenstam is the greatest women\'s golfer ever, with 89 LPGA wins and 10 major championships. She also played in a PGA Tour event in 2003, missing the cut by four shots.' },
+
+  // ── MMA ──
+  { sport:'MMA', em:'🤼', text:'The UFC was founded in 1993 with a tournament designed to find out which martial art was most effective. Royce Gracie won three of the first four tournaments using Brazilian jiu-jitsu.' },
+  { sport:'MMA', em:'🤼', text:'Georges St-Pierre is considered the greatest welterweight of all time. He went 13 years without losing a fight inside the octagon.' },
+  { sport:'MMA', em:'🤼', text:'The shortest UFC fight ever lasted just 5 seconds — Duane Ludwig knocked out Jonathan Goulet with a single punch in 2006.' },
+  { sport:'MMA', em:'🤼', text:'Demetrious "Mighty Mouse" Johnson made 11 consecutive flyweight title defenses — the most in UFC history. He weighed only 125 pounds.' },
+  { sport:'MMA', em:'🤼', text:'Francis Ngannou has the hardest recorded punch in history, measured at the equivalent of 96 horsepower — comparable to a Ford Escort at full speed.' },
+  { sport:'MMA', em:'🤼', text:'Chuck Liddell and Tito Ortiz were the first MMA fighters to become mainstream celebrity athletes, appearing on magazine covers and late-night TV.' },
+  { sport:'MMA', em:'🤼', text:'Amanda Nunes holds simultaneous titles in two UFC weight classes and is considered the greatest female MMA fighter of all time.' },
+
+  // ── EXTREME ──
+  { sport:'EXTREME', em:'🛹', text:'Skateboarding was invented in California in the late 1940s and 1950s by surfers who wanted to surf when the waves were flat. It was called "sidewalk surfing."' },
+  { sport:'EXTREME', em:'🛹', text:'The X Games were created in 1995 by ESPN. The Summer X Games drew 198,000 spectators in their first year in Providence, Rhode Island.' },
+  { sport:'EXTREME', em:'🛹', text:'Evel Knievel attempted 75 ramp-to-ramp motorcycle jumps in his career. He suffered 433 bone fractures, earning him a Guinness World Record for most broken bones.' },
+  { sport:'EXTREME', em:'🛹', text:'Big-wave surfer Laird Hamilton helped pioneer tow-in surfing — being pulled by a jet ski into waves too large to paddle into. He surfed a 70-foot wave at Teahupo\'o in 2000.' },
+  { sport:'EXTREME', em:'🛹', text:'The highest recorded bungee jump was 764 meters (2,507 feet) from a hot air balloon over Niobrara, Nebraska in 2001.' },
+  { sport:'EXTREME', em:'🛹', text:'Alex Honnold free-soloed El Capitan in Yosemite in 2017 — climbing 3,000 feet of vertical granite with no ropes or protection in 3 hours and 56 minutes.' },
+
+  // ── GENERAL ──
+  { sport:'GENERAL', em:'🏆', text:'The word "athlete" comes from the Greek "athlos," meaning contest or prize. The ancient Greeks held athletic competitions as religious festivals.' },
+  { sport:'GENERAL', em:'🏆', text:'Sports injuries cost the US economy an estimated $33 billion per year in medical costs and lost productivity.' },
+  { sport:'GENERAL', em:'🏆', text:'Michael Jordan made more money from Nike in 2022 than he ever made playing basketball. His Air Jordan royalties exceed $150 million per year.' },
+  { sport:'GENERAL', em:'🏆', text:'The first sports broadcast on American radio was a boxing match between Johnny Ray and Johnny Dundee in 1921 on KDKA Pittsburgh.' },
+  { sport:'GENERAL', em:'🏆', text:'Ancient Romans had their own version of fantasy sports — fans would bet on which gladiators would win based on past performance and physical stats.' },
+  { sport:'GENERAL', em:'🏆', text:'LeBron James, Tiger Woods, and Michael Jordan are the only three athletes to have earned over $1 billion during their playing careers.' },
+  { sport:'GENERAL', em:'🏆', text:'The phenomenon of home field advantage is real and measurable — home teams win roughly 60% of games across all major professional sports.' },
+];
+
+let filteredFacts = FACTS.slice();
+let currentFactIdx = 0;
+let triviaFilter = 'ALL';
+
+let triviaReady = false;
+
+function initTrivia() {
+  renderFact(false);
+  if (triviaReady) return;
+  triviaReady = true;
+
+  // Filter buttons — attach once
+  document.querySelectorAll('.trivia-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.trivia-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      triviaFilter = btn.dataset.tsport;
+      filteredFacts = triviaFilter === 'ALL' ? FACTS.slice() : FACTS.filter(f => f.sport === triviaFilter);
+      currentFactIdx = 0;
+      renderFact(true);
+    });
+  });
+
+  // Swipe support — attach once
+  let touchStartX = 0;
+  const card = document.getElementById('factCard');
+  card.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  card.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) dx < 0 ? nextFact() : prevFact();
+  }, { passive: true });
+}
+
+function renderFact(animate) {
+  if (!filteredFacts.length) return;
+  const fact = filteredFacts[currentFactIdx];
+  const card = document.getElementById('factCard');
+  const badge = document.getElementById('factBadge');
+  const text = document.getElementById('factText');
+  const counter = document.getElementById('triviaCounter');
+  const dots = document.getElementById('factDots');
+
+  badge.textContent = fact.em + ' ' + fact.sport;
+  text.textContent = fact.text;
+  card.setAttribute('data-sport-em', fact.em);
+  counter.textContent = `Fact ${currentFactIdx + 1} of ${filteredFacts.length}`;
+
+  // Dots (max 10 shown)
+  const total = Math.min(filteredFacts.length, 10);
+  const dotIdx = Math.floor(currentFactIdx / filteredFacts.length * total);
+  dots.innerHTML = Array.from({length: total}, (_, i) =>
+    `<div class="fact-dot${i === dotIdx ? ' active' : ''}"></div>`
+  ).join('');
+
+  if (animate) {
+    card.classList.remove('animate-in');
+    card.offsetHeight;
+    card.classList.add('animate-in');
+  }
+}
+
+function nextFact() {
+  if (!filteredFacts.length) return;
+  currentFactIdx = (currentFactIdx + 1) % filteredFacts.length;
+  renderFact(true);
+}
+
+function prevFact() {
+  if (!filteredFacts.length) return;
+  currentFactIdx = (currentFactIdx - 1 + filteredFacts.length) % filteredFacts.length;
+  renderFact(true);
+}
+
+function shuffleFact() {
+  if (!filteredFacts.length) return;
+  let next;
+  do { next = Math.floor(Math.random() * filteredFacts.length); }
+  while (next === currentFactIdx && filteredFacts.length > 1);
+  currentFactIdx = next;
+  renderFact(true);
+}
+
+init();
+initHeroBg();
+initSotd();
+</script>
+</body>
+</html>
